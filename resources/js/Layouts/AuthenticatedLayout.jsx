@@ -31,12 +31,70 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    href={route("dashboard")}
-                                    active={route().current("dashboard")}
-                                >
-                                    Dashboard
-                                </NavLink>
+                                {/* CUSTOMER LINKS */}
+                                {user.role === "customer" && (
+                                    <>
+                                        <NavLink
+                                            href={route("dashboard")}
+                                            active={route().current(
+                                                "dashboard",
+                                            )}
+                                        >
+                                            My Bookings
+                                        </NavLink>
+                                        <NavLink
+                                            href="/resources"
+                                            active={route().current(
+                                                "resources.*",
+                                            )}
+                                        >
+                                            Find a Place
+                                        </NavLink>
+                                    </>
+                                )}
+                                {/* OWNER LINKS */}
+                                {user.role === "owner" && (
+                                    <>
+                                        <NavLink
+                                            href={route("owner.dashboard")}
+                                            active={route().current(
+                                                "owner.dashboard",
+                                            )}
+                                        >
+                                            Partner Hub
+                                        </NavLink>
+                                        <NavLink
+                                            href="/partner/my-resources"
+                                            active={route().current(
+                                                "partner.my-resources",
+                                            )}
+                                        >
+                                            Manage Listings
+                                        </NavLink>
+                                    </>
+                                )}
+
+                                {/* ADMIN LINKS */}
+                                {user.role === "admin" && (
+                                    <>
+                                        <NavLink
+                                            href={route("admin.dashboard")}
+                                            active={route().current(
+                                                "admin.dashboard",
+                                            )}
+                                        >
+                                            Admin Overview
+                                        </NavLink>
+                                        <NavLink
+                                            href="/admin/users"
+                                            active={route().current(
+                                                "admin.users",
+                                            )}
+                                        >
+                                            Manage Users
+                                        </NavLink>
+                                    </>
+                                )}
                             </div>
                         </div>
 
@@ -44,7 +102,10 @@ export default function AuthenticatedLayout({ header, children }) {
                             <div className="relative ms-3">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger>
-                                        <Button variant="ghost" className="w-auto rounded-full px-3 py-2 text-sm font-medium">
+                                        <Button
+                                            variant="ghost"
+                                            className="w-auto rounded-full px-3 py-2 text-sm font-medium"
+                                        >
                                             {user.name}
                                             <svg
                                                 className="h-5 w-5"
