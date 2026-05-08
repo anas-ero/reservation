@@ -1,11 +1,10 @@
-import { Link } from "@inertiajs/react"
-import { Search } from "lucide-react"
+import { Link } from "@inertiajs/react";
+import { Search } from "lucide-react";
 
 export default function MainLayout({ children, auth }) {
-  return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-950">
-
-      <header className="bg-white border-b border-zinc-200 sticky top-0 z-50">
+    return (
+        <div className="min-h-screen bg-zinc-50 text-zinc-950">
+            <header className="bg-white border-b border-zinc-200 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-2">
                         <div className="bg-zinc-950 p-1.5 rounded-md">
@@ -18,7 +17,7 @@ export default function MainLayout({ children, auth }) {
 
                     <div className="flex items-center gap-4">
                         <Link
-                            href="#"
+                            href={route("partner.register")}
                             className="text-sm font-medium text-zinc-600 hover:text-zinc-950 hidden md:block"
                         >
                             Partner with us
@@ -50,11 +49,8 @@ export default function MainLayout({ children, auth }) {
                 </div>
             </header>
 
-      {/* Page content */}
-      <main>
-        {children}
-      </main>
-
-    </div>
-  )
+            {/* Page content */}
+            <main>{children}</main>
+        </div>
+    );
 }

@@ -32,12 +32,19 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        
-        $role = $request->user()->role;
 
-        if($role === 'admin') {
+        $user = $request->user();
+
+        if ($user->role === 'admin') {
             return redirect()->intended(route('admin.dashboard'));
-        } elseif ($role === 'owner') {
+        } if ($user->role === 'owner') {
+            // Check if they are approved by the admin yet
+            if (! $user->is_verified) {
+                // Not approved? Send them to the waiting room.
+                return redirect()->route('partner.pending');
+            }
+
+            // Approved? Send them to the real dashboard.
             return redirect()->intended(route('owner.dashboard'));
         }
 

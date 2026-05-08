@@ -15,8 +15,11 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'phone',
         'avatar',
+        'is_verified',
+        'business_name',
+        'cin_or_rc',
+        'phone_number',
     ];
 
     //    Reservation made by a user

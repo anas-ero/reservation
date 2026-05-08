@@ -17,7 +17,9 @@ import {
 import BookingCalendar from "@/Components/Style/Calendar/BookingCalendar";
 import SingleDateTimePicker from "@/Components/Style/Calendar/SingleDateTimePicker";
 import TimePicker from "@/Components/Style/Calendar/TimePicker";
-export default function Welcome({ auth }) {
+import HerorResorcesCard from "@/Components/Landing/HerorResorcesCard";
+
+export default function Welcome({ auth, resources, currentFilters }) {
     // State to handle the multi-category search tabs
     const [searchType, setSearchType] = useState("stays");
     const [dateRange, setDateRange] = useState({});
@@ -207,126 +209,9 @@ export default function Welcome({ auth }) {
                 <div className="h-28 sm:h-24"></div>
 
                 {/* Diverse Listings Showcase */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                    <div className="flex justify-between items-end mb-8">
-                        <div>
-                            <h2 className="text-2xl font-bold tracking-tight text-zinc-950">
-                                Featured Reservations
-                            </h2>
-                            <p className="text-zinc-500 mt-1">
-                                Top-rated spots and rentals available right now.
-                            </p>
-                        </div>
-                        <Link
-                            href="#"
-                            className="hidden sm:flex items-center text-sm font-medium text-zinc-950 hover:underline"
-                        >
-                            View all <ChevronRight className="w-4 h-4 ml-1" />
-                        </Link>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {/* Stay Card */}
-                        <Link href="#" className="group flex flex-col">
-                            <div className="aspect-[4/3] bg-zinc-200 rounded-xl mb-4 overflow-hidden relative">
-                                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-bold shadow-sm flex items-center">
-                                    <Bed className="w-3 h-3 mr-1.5" /> Villa
-                                </div>
-                            </div>
-                            <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-semibold text-zinc-950 group-hover:underline">
-                                    Atlas View Villa
-                                </h3>
-                                <div className="flex items-center text-sm font-medium">
-                                    <Star className="w-3 h-3 fill-zinc-950 text-zinc-950 mr-1" />{" "}
-                                    4.9
-                                </div>
-                            </div>
-                            <p className="text-sm text-zinc-500 mb-2">
-                                Marrakech • Up to 8 guests
-                            </p>
-                            <p className="text-sm text-zinc-950 mt-auto">
-                                <span className="font-bold">1,200 MAD</span> /
-                                night
-                            </p>
-                        </Link>
-
-                        {/* Car Card */}
-                        <Link href="#" className="group flex flex-col">
-                            <div className="aspect-[4/3] bg-zinc-200 rounded-xl mb-4 overflow-hidden relative">
-                                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-bold shadow-sm flex items-center">
-                                    <Car className="w-3 h-3 mr-1.5" /> SUV
-                                </div>
-                            </div>
-                            <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-semibold text-zinc-950 group-hover:underline">
-                                    Range Rover Sport
-                                </h3>
-                                <div className="flex items-center text-sm font-medium">
-                                    <Star className="w-3 h-3 fill-zinc-950 text-zinc-950 mr-1" />{" "}
-                                    5.0
-                                </div>
-                            </div>
-                            <p className="text-sm text-zinc-500 mb-2">
-                                Casablanca • Auto • 5 Seats
-                            </p>
-                            <p className="text-sm text-zinc-950 mt-auto">
-                                <span className="font-bold">850 MAD</span> / day
-                            </p>
-                        </Link>
-
-                        {/* Pitch Card */}
-                        <Link href="#" className="group flex flex-col">
-                            <div className="aspect-[4/3] bg-zinc-200 rounded-xl mb-4 overflow-hidden relative">
-                                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-bold shadow-sm flex items-center">
-                                    <Trophy className="w-3 h-3 mr-1.5" /> Sports
-                                </div>
-                            </div>
-                            <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-semibold text-zinc-950 group-hover:underline">
-                                    City Club 5v5 Pitch
-                                </h3>
-                                <div className="flex items-center text-sm font-medium">
-                                    <Star className="w-3 h-3 fill-zinc-950 text-zinc-950 mr-1" />{" "}
-                                    4.7
-                                </div>
-                            </div>
-                            <p className="text-sm text-zinc-500 mb-2">
-                                Rabat • Synthetic Turf • Showers
-                            </p>
-                            <p className="text-sm text-zinc-950 mt-auto">
-                                <span className="font-bold">300 MAD</span> /
-                                hour
-                            </p>
-                        </Link>
-
-                        {/* Workspace Card */}
-                        <Link href="#" className="group flex flex-col">
-                            <div className="aspect-[4/3] bg-zinc-200 rounded-xl mb-4 overflow-hidden relative">
-                                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-bold shadow-sm flex items-center">
-                                    <Briefcase className="w-3 h-3 mr-1.5" />{" "}
-                                    Workspace
-                                </div>
-                            </div>
-                            <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-semibold text-zinc-950 group-hover:underline">
-                                    TechHub Meeting Room
-                                </h3>
-                                <div className="flex items-center text-sm font-medium">
-                                    <Star className="w-3 h-3 fill-zinc-950 text-zinc-950 mr-1" />{" "}
-                                    4.8
-                                </div>
-                            </div>
-                            <p className="text-sm text-zinc-500 mb-2">
-                                Tangier • Up to 10 people • Wi-Fi
-                            </p>
-                            <p className="text-sm text-zinc-950 mt-auto">
-                                <span className="font-bold">150 MAD</span> /
-                                hour
-                            </p>
-                        </Link>
-                    </div>
-                </section>
+                
+                <HerorResorcesCard resources={resources} initialFilter={currentFilters?.category || ''}/>
+                
             </div>
         </MainLayout>
     );
