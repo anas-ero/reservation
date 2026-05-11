@@ -17,7 +17,6 @@ Route::get('/', [HeroController::class, 'index'])->name('home');
 // --- GENERIC DASHBOARD (With Backdoor Protection) ---
 Route::get('/dashboard', function (Request $request) {
     // 🛑 ADD THIS LINE RIGHT HERE:
-    dd("STOP! I am logged in as: " . $request->user()->email . " | My role is: " . $request->user()->role);
 
     // If they are an Admin, kick them to Admin Dashboard
     if ($request->user()->role === 'admin') {
@@ -55,9 +54,9 @@ Route::middleware(['auth', 'role:owner'])->prefix('partner')->group(function () 
 Route::middleware(['auth', 'role:owner', CheckOwnerVerified::class])->prefix('partner')->group(function () {
     Route::get('/dashboard', [OwnerController::class, 'dashboard'])->name('owner.dashboard');
     
-    // Route::resource('/resources', PartnerResourceController::class)->names(
-    //     'partner.resources'
-    // );
+    Route::resource('/resources', PartnerResourceController::class)->names(
+        'partner.resources'
+    );
 });
 
 // --- 2. SUPER ADMIN ROUTES ---

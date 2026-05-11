@@ -19,6 +19,7 @@ class PartnerResourceController extends Controller
             'resources' => $resources
         ]);
     }
+    
 
     // 2. Show the "Create a new Listing" form
     public function create()
@@ -30,11 +31,11 @@ class PartnerResourceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'required|string',
             'type' => 'required|string|in:villa,car,sports_pitch', // Limits the options
-            'location' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'location' => 'required|string|max:255',
         ]);
 
         // Securely create the resource attached to the logged-in user

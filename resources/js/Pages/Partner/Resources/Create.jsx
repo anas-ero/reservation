@@ -6,11 +6,11 @@ export default function CreateListing({ auth }) {
     
     // Inertia's built-in form helper makes handling validation errors a breeze
     const { data, setData, post, processing, errors } = useForm({
-        name: '',
-        type: 'villa', // Set a default type
-        location: '',
-        price: '',
+        title: '',
         description: '',
+        type: '', 
+        price: '',
+        location: '',
     });
 
     const submit = (e) => {
@@ -54,13 +54,13 @@ export default function CreateListing({ auth }) {
                                         </label>
                                         <input
                                             type="text"
-                                            value={data.name}
-                                            onChange={(e) => setData('name', e.target.value)}
+                                            value={data.title}
+                                            onChange={(e) => setData('title', e.target.value)}
                                             className="w-full border-zinc-300 focus:border-zinc-950 focus:ring-zinc-950 rounded-lg shadow-sm"
                                             placeholder="e.g., Atlas Mountain Villa"
                                             required
                                         />
-                                        {errors.name && <p className="text-sm text-red-600 mt-1">{errors.name}</p>}
+                                        {errors.title && <p className="text-sm text-red-600 mt-1">{errors.title}</p>}
                                     </div>
 
                                     <div>
@@ -73,6 +73,7 @@ export default function CreateListing({ auth }) {
                                             onChange={(e) => setData('type', e.target.value)}
                                             className="w-full border-zinc-300 focus:border-zinc-950 focus:ring-zinc-950 rounded-lg shadow-sm"
                                         >
+                                            <option value="">Select a type</option>
                                             <option value="villa">Villa / Apartment</option>
                                             <option value="car">Vehicle / Car</option>
                                             <option value="sports_pitch">Sports Pitch</option>
