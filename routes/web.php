@@ -1,15 +1,14 @@
 <?php
 
+use App\Http\Controllers\HeroController;
 use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\Partner\PartnerResourceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Middleware\CheckOwnerVerified;
-use App\Models\Resource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HeroController;
-use App\Http\Controllers\Partner\PartnerResourceController;
 use Inertia\Inertia;
 
 Route::get('/', [HeroController::class, 'index'])->name('home');
@@ -22,7 +21,7 @@ Route::get('/dashboard', function (Request $request) {
     if ($request->user()->role === 'admin') {
         return redirect()->route('admin.dashboard');
     }
-    
+
     // If they are an Owner, kick them to the Partner Dashboard (which will then check if they are pending)
     if ($request->user()->role === 'owner') {
         return redirect()->route('owner.dashboard');
@@ -32,14 +31,12 @@ Route::get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
 // --- PROFILE ROUTES ---
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 
 // --- 1. PARTNER/OWNER ROUTES ---
 
@@ -53,7 +50,7 @@ Route::middleware(['auth', 'role:owner'])->prefix('partner')->group(function () 
 // B. The REAL Dashboard (100% Protected by CheckOwnerVerified)
 Route::middleware(['auth', 'role:owner', CheckOwnerVerified::class])->prefix('partner')->group(function () {
     Route::get('/dashboard', [OwnerController::class, 'dashboard'])->name('owner.dashboard');
-    
+
     Route::resource('/resources', PartnerResourceController::class)->names(
         'partner.resources'
     );
@@ -66,9 +63,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     })->name('admin.dashboard');
 });
 
-
 // --- 3. PUBLIC APP ROUTES ---
-Route::get('/resources', [ResourceController::class, 'index']);
+Route::get('/resources', [ResourceController::class, 'index'])->name('public.resources.index');
+
+// Add this line for the new Public Show page!
+Route::get('/resources/{resource}', [ResourceController::class, 'show'])->name('public.resources.show');
+// Your existing reservation routes...
 Route::post('/reservations', [ReservationController::class, 'store']);
 Route::get('/reservations', [ReservationController::class, 'index']);
 

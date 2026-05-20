@@ -63,10 +63,11 @@ export default function AuthenticatedLayout({ header, children }) {
                                         >
                                             Partner Hub
                                         </NavLink>
+
                                         <NavLink
-                                            href="/partner/my-resources"
+                                            href={route('partner.resources.index')}
                                             active={route().current(
-                                                "partner.my-resources",
+                                                "partner.resources",
                                             )}
                                         >
                                             Manage Listings
