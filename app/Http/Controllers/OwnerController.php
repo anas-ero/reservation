@@ -26,7 +26,7 @@ class OwnerController extends Controller
                                 ->take(5)
                                 ->get();
 
-        // Pass it all to React
+        // Pass it all to React'
         return Inertia::render('OwnerDashboard', [
             'stats' => $stats,
             'recentResources' => $recentResources

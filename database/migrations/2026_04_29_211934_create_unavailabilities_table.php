@@ -16,8 +16,8 @@ return new class extends Migration
 
             $table->foreignId('resource_id')->constrained()->cascadeOnDelete();
 
-            $table->timestamp('start_time');
-            $table->timestamp('end_time');
+            $table->date('start_time');
+            $table->date('end_time');
 
             $table->string('reason')->nullable();
 
