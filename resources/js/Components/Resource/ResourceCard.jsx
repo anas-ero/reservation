@@ -10,7 +10,7 @@ const ResourceCard = ({ resource }) => {
                 {resource.images && resource.images.length > 0 ? (
                     <img
                         src={`/storage/${resource.images[0].path}`}
-                        alt={resource.name}
+                        alt={resource.title}
                         className="w-full h-full object-cover"
                     />
                 ) : (
@@ -26,7 +26,7 @@ const ResourceCard = ({ resource }) => {
                 {/* Title & Location */}
                 <div>
                     <h2 className="text-xl font-bold text-zinc-950 hover:underline cursor-pointer line-clamp-1">
-                        {resource.name}
+                        {resource.title}
                     </h2>
                     <p className="text-sm text-zinc-500">{resource.location}</p>
                 </div>
@@ -40,7 +40,7 @@ const ResourceCard = ({ resource }) => {
                         href={`/resources/${resource.id}`}
                         className="bg-zinc-950 text-white mt-2 w-full sm:w-auto px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-zinc-800 transition shadow-sm text-center"
                     >
-                        See availability
+                        See details
                     </Link>
                 </div>
                 

@@ -68,4 +68,15 @@ class ResourceController extends Controller
             ]),
         ]);
     }
+
+    public function show(Resource $resource)
+    {
+        // 1. Add +1 to the views every time this page loads!
+        $resource->increment('views');
+
+        // 2. Return the public view to the customer
+        return Inertia::render('Resources/Show', [
+            'resource' => $resource
+        ]);
+    }
 }
