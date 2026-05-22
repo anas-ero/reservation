@@ -72,12 +72,5 @@ Route::get('/resources/{resource}', [ResourceController::class, 'show'])->name('
 Route::post('/reservations', [ReservationController::class, 'store']);
 Route::get('/reservations', [ReservationController::class, 'index']);
 
-<<<<<<< HEAD
 
-Route::get("/resources", function () {
-    return response()->json(Resource::all());
-});
 require __DIR__.'/auth.php';
-=======
-require __DIR__.'/auth.php';
->>>>>>> f86d539bebbab6db512727998d3c386c50675872

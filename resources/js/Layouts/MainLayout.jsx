@@ -1,8 +1,10 @@
 import { Link } from "@inertiajs/react";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { Search } from "lucide-react";
 
 export default function MainLayout({ children, auth }) {
     return (
+        <TooltipProvider>
         <div className="min-h-screen bg-zinc-50 text-zinc-950">
             <header className="bg-white border-b border-zinc-200 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -52,5 +54,7 @@ export default function MainLayout({ children, auth }) {
             {/* Page content */}
             <main>{children}</main>
         </div>
+        </TooltipProvider>
     );
+
 }

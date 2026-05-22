@@ -1,26 +1,36 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { AppSidebar } from "@/components/app-sidebar"
+import { ChartAreaInteractive } from "@/components/chart-area-interactive"
+import { DataTable } from "@/components/data-table"
+import { SectionCards } from "@/components/section-cards"
+import { SiteHeader } from "@/components/site-header"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
-export default function Dashboard() {
-    return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Dashboard
-                </h2>
-            }
-        >
-            <Head title="Dashboard" />
+import data from "./data.json"
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            You're logged in!
-                        </div>
-                    </div>
-                </div>
+export default function Page() {
+  return (
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)"
+        }
+      }>
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+              <SectionCards />
+              <div className="px-4 lg:px-6">
+                <ChartAreaInteractive />
+              </div>
+              <DataTable data={data} />
             </div>
-        </AuthenticatedLayout>
-    );
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  );
 }
