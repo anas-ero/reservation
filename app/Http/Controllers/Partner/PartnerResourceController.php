@@ -32,7 +32,7 @@ class PartnerResourceController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'type' => 'required|string|in:stay,car,sports_pitch', // Limits the options
+            'type' => 'required|string|in:stays,car,sports_pitch', // Limits the options
             'price' => 'required|numeric|min:0',
             'location' => 'required|string|max:255',
         ]);
