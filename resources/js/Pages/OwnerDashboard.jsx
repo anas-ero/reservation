@@ -30,12 +30,29 @@ export default function OwnerDashboard({ auth, stats, recentResources }) {
         switch (type) {
             case "car":
                 return <Car className="w-4 h-4 text-blue-500" />;
+            case "hotel":
             case "villa":
                 return <Building className="w-4 h-4 text-emerald-500" />;
+            case "pitch":
             case "sports_pitch":
                 return <Tent className="w-4 h-4 text-orange-500" />;
             default:
                 return <Building className="w-4 h-4 text-zinc-500" />;
+        }
+    };
+
+    const getTypeLabel = (type) => {
+        switch (type) {
+            case "hotel":
+            case "villa":
+                return "Hotel / Stay";
+            case "car":
+                return "Car";
+            case "pitch":
+            case "sports_pitch":
+                return "Pitch";
+            default:
+                return String(type || "").replace("_", " ");
         }
     };
 
@@ -171,10 +188,7 @@ export default function OwnerDashboard({ auth, stats, recentResources }) {
                                                                 {resource.title}
                                                             </span>
                                                             <span className="text-xs text-zinc-500 capitalize">
-                                                                {resource.type.replace(
-                                                                    "_",
-                                                                    " ",
-                                                                )}
+                                                                {getTypeLabel(resource.type)}
                                                             </span>
                                                         </div>
                                                     </div>

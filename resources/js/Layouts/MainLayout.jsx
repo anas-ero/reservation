@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { Search } from "lucide-react";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function MainLayout({ children, auth }) {
     return (
@@ -43,6 +44,8 @@ export default function MainLayout({ children, auth }) {
                                 >
                                     Register
                                 </Link>
+                                <ModeToggle />
+
                             </div>
                         )}
                     </div>

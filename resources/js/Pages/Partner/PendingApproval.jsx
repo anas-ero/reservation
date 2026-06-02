@@ -7,10 +7,10 @@ import {
 
 export default function PendingApproval() {
     return (
-        <div className="min-h-screen bg-zinc-50 flex flex-col justify-center items-center p-4 selection:bg-zinc-900 selection:text-white font-sans">
+        <div className="min-h-screen bg-background text-foreground flex flex-col justify-center items-center p-4 selection:bg-zinc-900 selection:text-white font-sans">
             <Head title="Account Under Review" />
             {/* Main Status Card */}
-            <div className="max-w-md w-full bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden">
+            <div className="max-w-md w-full bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
                 
                 {/* Header Banner */}
                 <div className="bg-zinc-950 p-8 text-center relative overflow-hidden">
@@ -36,19 +36,19 @@ export default function PendingApproval() {
                         const page = usePage();
                         const user = page.props.auth?.user || page.props.user || {};
                         return (
-                            <p className="text-sm text-zinc-600 mb-2">Hi {user.name || 'Guest'}</p>
+                            <p className="text-sm text-muted-foreground mb-2">Hi {user.name || 'Guest'}</p>
                         );
                     })()}
-                    <p className="text-zinc-600 text-sm leading-relaxed mb-8 text-center">
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-8 text-center">
                         Thank you for partnering with us. To ensure the safety and quality of our platform, our team manually reviews all partner accounts. This process usually takes <span className="font-bold text-zinc-950">24-48 hours</span>.
                     </p>
 
                     {/* Visual Timeline */}
-                    <div className="space-y-6 border-l-2 border-zinc-100 ml-3 pl-6 mb-8">
+                    <div className="space-y-6 border-l-2 border-border ml-3 pl-6 mb-8">
                         
                         {/* Step 1: Completed */}
                         <div className="relative">
-                            <div className="absolute -left-[35px] top-0 bg-white rounded-full">
+                            <div className="absolute -left-[35px] top-0 bg-card rounded-full">
                                 <CheckCircle2 className="w-6 h-6 text-green-500" />
                             </div>
                             <h3 className="text-sm font-bold text-zinc-950">Account Registered</h3>
@@ -57,7 +57,7 @@ export default function PendingApproval() {
                         
                         {/* Step 2: In Progress (Active) */}
                         <div className="relative">
-                            <div className="absolute -left-[35px] top-0 bg-white rounded-full">
+                            <div className="absolute -left-[35px] top-0 bg-card rounded-full">
                                 {/* CSS Spinner */}
                                 <div className="w-6 h-6 rounded-full border-[3px] border-zinc-200 border-t-zinc-950 animate-spin" />
                             </div>
@@ -67,7 +67,7 @@ export default function PendingApproval() {
                         
                         {/* Step 3: Pending (Faded out) */}
                         <div className="relative opacity-40">
-                            <div className="absolute -left-[35px] top-0 bg-white rounded-full">
+                            <div className="absolute -left-[35px] top-0 bg-card rounded-full">
                                 <ShieldCheck className="w-6 h-6 text-zinc-400" />
                             </div>
                             <h3 className="text-sm font-bold text-zinc-950">Approval & Onboarding</h3>
@@ -77,15 +77,15 @@ export default function PendingApproval() {
                     </div>
 
                     {/* Email Notice Box */}
-                    <div className="bg-zinc-50 rounded-xl p-4 flex items-start gap-3 border border-zinc-200 mb-8">
+                    <div className="bg-muted rounded-xl p-4 flex items-start gap-3 border border-border mb-8">
                         <Mail className="w-5 h-5 text-zinc-500 shrink-0 mt-0.5" />
-                        <p className="text-xs text-zinc-600 leading-relaxed">
+                        <p className="text-xs text-muted-foreground leading-relaxed">
                             Keep an eye on your inbox. We will notify you via email the moment your account is approved.
                         </p>
                     </div>
 
                     {/* Safe Logout Button */}
-                    <div className="text-center border-t border-zinc-100 pt-6">
+                    <div className="text-center border-t border-border pt-6">
                         <Link
                             href={route('logout')}
                             method="post"

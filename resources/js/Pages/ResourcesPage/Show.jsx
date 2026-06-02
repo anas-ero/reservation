@@ -16,8 +16,10 @@ import { Separator } from "@/components/ui/separator";
 // ─── Constants ─────────────────────────────────────────────────────────────────
 
 const TYPE_META = {
+    hotel:        { label: "Hotel / Stay", icon: Home,      color: "bg-amber-100 text-amber-800 border-amber-200"    },
     villa:        { label: "Villa",        icon: Home,      color: "bg-amber-100 text-amber-800 border-amber-200"    },
     car:          { label: "Vehicle",      icon: CarIcon,   color: "bg-sky-100 text-sky-800 border-sky-200"          },
+    pitch:        { label: "Pitch",        icon: Dumbbell,  color: "bg-emerald-100 text-emerald-800 border-emerald-200" },
     workspace:    { label: "Workspace",    icon: Briefcase, color: "bg-violet-100 text-violet-800 border-violet-200" },
     sports_pitch: { label: "Sports Pitch", icon: Dumbbell,  color: "bg-emerald-100 text-emerald-800 border-emerald-200" },
 };
@@ -399,7 +401,7 @@ export default function Show({ auth, resource }) {
                                 { icon: CalendarDays, title: "Free cancellation", sub: "Cancel up to 7 days before" },
                                 { icon: ShieldCheck,  title: "Fully insured",     sub: "Protected by Host Guarantee" },
                             ].map(({ icon: Icon, title, sub }) => (
-                                <div key={title} className="flex gap-3 p-4 rounded-xl border border-zinc-100 bg-white shadow-sm hover:shadow-md transition-shadow">
+                                <div key={title} className="flex gap-3 p-4 rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
                                     <Icon className="w-5 h-5 text-zinc-500 flex-shrink-0 mt-0.5" />
                                     <div>
                                         <div className="text-sm font-semibold text-zinc-900">{title}</div>
@@ -476,7 +478,7 @@ export default function Show({ auth, resource }) {
                             {/* Review cards */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                 {MOCK_REVIEWS.map((review) => (
-                                    <div key={review.id} className="bg-white rounded-2xl border border-zinc-100 p-5 shadow-sm hover:shadow-md transition-shadow space-y-3">
+                                    <div key={review.id} className="bg-card rounded-2xl border border-border p-5 shadow-sm hover:shadow-md transition-shadow space-y-3">
                                         <div className="flex items-center gap-3">
                                             <InitialsAvatar initials={review.initials} size="sm" />
                                             <div>
@@ -603,7 +605,7 @@ export default function Show({ auth, resource }) {
             </main>
 
             {/* ── Mobile sticky booking bar (your original had no mobile widget) ── */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-zinc-200 px-4 py-3 shadow-[0_-4px_24px_rgba(0,0,0,0.08)]">
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-card/95 backdrop-blur-md border-t border-border px-4 py-3 shadow-[0_-4px_24px_rgba(0,0,0,0.08)]">
                 <div className="flex items-center justify-between gap-4 max-w-lg mx-auto">
                     <div>
                         <div className="text-lg font-bold text-zinc-900">

@@ -9,6 +9,7 @@ use App\Models\ResourceMeta;
 use App\Models\AvailabilityRule;
 use App\Models\Unavailability;
 use App\Models\Review;
+use App\Models\ResourceRoom;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Resource extends Model
@@ -24,7 +25,11 @@ class Resource extends Model
         'location',
         'lat',
         'lng',
-        'status'
+        'status',
+        'max_guests',
+        'exclude_infants',
+        'bathrooms',
+        'allows_children',
     ];
 
     // owner 
@@ -46,6 +51,11 @@ class Resource extends Model
     public function metadata()
     {
         return $this->hasMany(ResourceMeta::class);
+    }
+    // Rooms
+    public function rooms()
+    {
+        return $this->hasMany(ResourceRoom::class);
     }
     // Availability rules
     public function availabilityRules()
