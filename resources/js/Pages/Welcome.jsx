@@ -48,7 +48,7 @@ export default function Welcome({ auth, resources, currentFilters }) {
 
     return (
         <MainLayout auth={auth}>
-            <div className="min-h-screen bg-zinc-50 text-zinc-950 font-sans selection:bg-zinc-900 selection:text-white">
+            <div className="min-h-screen bg-background text-foreground font-sans selection:bg-zinc-900 selection:text-white">
                 <Head title="Book Anything - ReserveFlow" />
 
                 {/* Hero & Tabbed Search Engine */}
@@ -68,30 +68,30 @@ export default function Welcome({ auth, resources, currentFilters }) {
 
                     {/* The Multi-Category Search Engine */}
                     <div className="absolute left-0 right-0 -bottom-16 px-4 sm:px-6 lg:px-8 z-10">
-                        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl border border-zinc-200 overflow-hidden">
+                        <div className="max-w-4xl mx-auto bg-card rounded-2xl shadow-2xl border border-border overflow-hidden">
                             {/* Search Type Tabs */}
-                            <div className="flex border-b border-zinc-200 bg-zinc-50/50 overflow-x-auto hide-scrollbar">
+                            <div className="flex border-b border-border bg-muted/30 overflow-x-auto hide-scrollbar">
                                 <button
                                     onClick={() => setSearchType("stays")}
-                                    className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap ${searchType === "stays" ? "border-zinc-950 text-zinc-950 bg-white" : "border-transparent text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100"}`}
+                                    className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap ${searchType === "stays" ? "border-zinc-950 text-foreground bg-card" : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted"}`}
                                 >
                                     <Bed className="w-4 h-4" /> Stays & Hotels
                                 </button>
                                 <button
                                     onClick={() => setSearchType("cars")}
-                                    className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap ${searchType === "cars" ? "border-zinc-950 text-zinc-950 bg-white" : "border-transparent text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100"}`}
+                                    className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap ${searchType === "cars" ? "border-zinc-950 text-foreground bg-card" : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted"}`}
                                 >
                                     <Car className="w-4 h-4" /> Car Rentals
                                 </button>
                                 <button
                                     onClick={() => setSearchType("sports")}
-                                    className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap ${searchType === "sports" ? "border-zinc-950 text-zinc-950 bg-white" : "border-transparent text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100"}`}
+                                    className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap ${searchType === "sports" ? "border-zinc-950 text-foreground bg-card" : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted"}`}
                                 >
                                     <Trophy className="w-4 h-4" /> Sports Venues
                                 </button>
                                 <button
                                     onClick={() => setSearchType("workspaces")}
-                                    className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap ${searchType === "workspaces" ? "border-zinc-950 text-zinc-950 bg-white" : "border-transparent text-zinc-500 hover:text-zinc-950 hover:bg-zinc-100"}`}
+                                    className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap ${searchType === "workspaces" ? "border-zinc-950 text-foreground bg-card" : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted"}`}
                                 >
                                     <Briefcase className="w-4 h-4" /> Workspaces
                                 </button>
@@ -99,12 +99,12 @@ export default function Welcome({ auth, resources, currentFilters }) {
 
                             {/* Search Inputs */}
                             <div className="p-2 sm:p-4">
-                                <div className="flex flex-col md:flex-row gap-2 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-zinc-200">
+                                <div className="flex flex-col md:flex-row gap-2 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-border">
                                     {/* Dynamic Location/Facility Input */}
                                     <div className="flex-1 flex items-center px-4 py-2 md:py-0">
                                         <MapPin className="w-5 h-5 text-zinc-400 mr-3 shrink-0" />
                                         <div className="w-full">
-                                            <label className="block text-xs font-bold text-zinc-950 uppercase tracking-wider mb-1">
+                                            <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
                                                 {searchType === "sports"
                                                     ? "Facility or City"
                                                     : "Location"}
@@ -120,7 +120,7 @@ export default function Welcome({ auth, resources, currentFilters }) {
                                                 onChange={(e) =>
                                                     setLocation(e.target.value)
                                                 }
-                                                className="w-full border-0 p-0 text-sm focus:ring-0 placeholder-zinc-400 text-zinc-950 outline-none bg-transparent"
+                                                className="w-full border-0 p-0 text-sm focus:ring-0 placeholder-muted-foreground text-foreground outline-none bg-transparent"
                                             />
                                         </div>
                                     </div>
@@ -129,7 +129,7 @@ export default function Welcome({ auth, resources, currentFilters }) {
                                     <div className="flex-1 flex items-center px-4 py-3 md:py-0">
                                         <Calendar className="w-5 h-5 text-zinc-400 mr-3 shrink-0" />
                                         <div className="w-full">
-                                            <label className="block text-xs font-bold text-zinc-950 uppercase tracking-wider mb-1">
+                                            <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
                                                 {searchType === "sports" ||
                                                 searchType === "workspaces"
                                                     ? "Date & Time"
@@ -172,7 +172,7 @@ export default function Welcome({ auth, resources, currentFilters }) {
                                             <Users className="w-5 h-5 text-zinc-400 mr-3 shrink-0" />
                                         )}
                                         <div className="w-full">
-                                            <label className="block text-xs font-bold text-zinc-950 uppercase tracking-wider mb-1">
+                                            <label className="block text-xs font-bold text-foreground uppercase tracking-wider mb-1">
                                                 {searchType === "cars"
                                                     ? "Vehicle Type"
                                                     : "Guests"}
@@ -184,7 +184,7 @@ export default function Welcome({ auth, resources, currentFilters }) {
                                                         ? "SUV, Economy, etc."
                                                         : "Add guests"
                                                 }
-                                                className="w-full border-0 p-0 text-sm focus:ring-0 placeholder-zinc-400 text-zinc-950 outline-none bg-transparent"
+                                                className="w-full border-0 p-0 text-sm focus:ring-0 placeholder-muted-foreground text-foreground outline-none bg-transparent"
                                             />
                                         </div>
                                     </div>

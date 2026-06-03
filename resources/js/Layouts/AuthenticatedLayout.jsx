@@ -1,244 +1,193 @@
-import ApplicationLogo from "@/Components/ApplicationLogo";
-import NavLink from "@/Components/NavLink";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarProvider,
+    SidebarTrigger,
+    SidebarInset,
+    SidebarMenu,
+    SidebarMenuItem,
+    SidebarMenuButton,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel
+} from "@/components/ui/sidebar";
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { 
+    Calendar, 
+    MapPin, 
+    LayoutDashboard, 
+    Users, 
+    User, 
+    LogOut, 
+    ChevronUp 
+} from "lucide-react";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
 
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
-
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 justify-between">
-                        <div className="flex">
-                            <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                                </Link>
-                            </div>
+        <SidebarProvider>
+            {/* 1. THE SIDEBAR */}
+            <Sidebar variant="inset">
+                
+                {/* Logo Area */}
+                <SidebarHeader>
+                    <div className="flex h-12 items-center px-4 mt-2">
+                        <Link href="/">
+                            <ApplicationLogo className="h-8 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        </Link>
+                    </div>
+                </SidebarHeader>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                {/* Navigation Links */}
+                <SidebarContent>
+                    <SidebarGroup>
+                        <SidebarGroupLabel>Menu</SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+                                
                                 {/* CUSTOMER LINKS */}
                                 {user.role === "customer" && (
                                     <>
-                                        <NavLink
-                                            href={route("dashboard")}
-                                            active={route().current(
-                                                "dashboard",
-                                            )}
-                                        >
-                                            My Bookings
-                                        </NavLink>
-                                        <NavLink
-                                            href="/resources"
-                                            active={route().current(
-                                                "resources.*",
-                                            )}
-                                        >
-                                            Find a Place
-                                        </NavLink>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild isActive={route().current("dashboard")}>
+                                                <Link href={route("dashboard")}>
+                                                    <Calendar className="mr-2 h-4 w-4" />
+                                                    <span>My Bookings</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild isActive={route().current("resources.*")}>
+                                                <Link href="/resources">
+                                                    <MapPin className="mr-2 h-4 w-4" />
+                                                    <span>Find a Place</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
                                     </>
                                 )}
+
                                 {/* OWNER LINKS */}
                                 {user.role === "owner" && (
                                     <>
-                                        <NavLink
-                                            href={route("owner.dashboard")}
-                                            active={route().current(
-                                                "owner.dashboard",
-                                            )}
-                                        >
-                                            Partner Hub
-                                        </NavLink>
-
-                                        <NavLink
-                                            href={route('partner.resources.index')}
-                                            active={route().current(
-                                                "partner.resources",
-                                            )}
-                                        >
-                                            Manage Listings
-                                        </NavLink>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild isActive={route().current("owner.dashboard")}>
+                                                <Link href={route("owner.dashboard")}>
+                                                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                                                    <span>Partner Hub</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild isActive={route().current("partner.resources")}>
+                                                <Link href={route('partner.resources.index')}>
+                                                    <MapPin className="mr-2 h-4 w-4" />
+                                                    <span>Manage Listings</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
                                     </>
                                 )}
 
                                 {/* ADMIN LINKS */}
                                 {user.role === "admin" && (
                                     <>
-                                        <NavLink
-                                            href={route("admin.dashboard")}
-                                            active={route().current(
-                                                "admin.dashboard",
-                                            )}
-                                        >
-                                            Admin Overview
-                                        </NavLink>
-                                        <NavLink
-                                            href="/admin/users"
-                                            active={route().current(
-                                                "admin.users",
-                                            )}
-                                        >
-                                            Manage Users
-                                        </NavLink>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild isActive={route().current("admin.dashboard")}>
+                                                <Link href={route("admin.dashboard")}>
+                                                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                                                    <span>Admin Overview</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton asChild isActive={route().current("admin.users")}>
+                                                <Link href="/admin/users">
+                                                    <Users className="mr-2 h-4 w-4" />
+                                                    <span>Manage Users</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
                                     </>
                                 )}
+
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                </SidebarContent>
+
+                {/* User Profile Dropdown at the Bottom */}
+                <SidebarFooter>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger >
+                                    <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400 font-bold">
+                                            {user.name.charAt(0)}
+                                        </div>
+                                        <div className="flex flex-col gap-0.5 leading-none">
+                                            <span className="font-semibold text-sm">{user.name}</span>
+                                            <span className="text-xs text-muted-foreground capitalize">{user.role}</span>
+                                        </div>
+                                        <ChevronUp className="ml-auto h-4 w-4" />
+                                    </SidebarMenuButton>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent side="top" className="w-[--radix-dropdown-menu-trigger-width]">
+                                    <DropdownMenuItem asChild>
+                                        <Link href={route("profile.edit")} className="w-full flex items-center cursor-pointer">
+                                            <User className="mr-2 h-4 w-4" />
+                                            <span>Profile</span>
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <Link method="post" href={route("logout")} as="button" className="w-full flex items-center cursor-pointer">
+                                            <LogOut className="mr-2 h-4 w-4" />
+                                            <span>Log Out</span>
+                                        </Link>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarFooter>
+            </Sidebar>
+
+            {/* 2. THE MAIN CONTENT AREA */}
+            <SidebarInset>
+                
+                {/* Top Header with Hamburger Trigger */}
+                <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 dark:bg-gray-800 dark:border-gray-700">
+                    <SidebarTrigger className="-ml-1" />
+                    <div className="w-full">
+                        {header && (
+                            <div className="font-semibold text-gray-800 dark:text-gray-200">
+                                {header}
                             </div>
-                        </div>
-
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
-                            <div className="relative ms-3">
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger>
-                                        <Button
-                                            variant="ghost"
-                                            className="w-auto rounded-full px-3 py-2 text-sm font-medium"
-                                        >
-                                            {user.name}
-                                            <svg
-                                                className="h-5 w-5"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                                    clipRule="evenodd"
-                                                />
-                                            </svg>
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent>
-                                        <DropdownMenuGroup>
-                                            <DropdownMenuItem>
-                                                <NavLink
-                                                    href={route("profile.edit")}
-                                                >
-                                                    Profile
-                                                </NavLink>
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <NavLink
-                                                    method="post"
-                                                    href={route("logout")}
-                                                    as="button"
-                                                >
-                                                    Log Out
-                                                </NavLink>
-                                            </DropdownMenuItem>
-                                        </DropdownMenuGroup>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </div>
-                        </div>
-
-                        <div className="-me-2 flex items-center sm:hidden">
-                            <button
-                                onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        (previousState) => !previousState,
-                                    )
-                                }
-                                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-400 dark:focus:bg-gray-900 dark:focus:text-gray-400"
-                            >
-                                <svg
-                                    className="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        className={
-                                            !showingNavigationDropdown
-                                                ? "inline-flex"
-                                                : "hidden"
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={
-                                            showingNavigationDropdown
-                                                ? "inline-flex"
-                                                : "hidden"
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
+                        )}
                     </div>
-                </div>
-
-                <div
-                    className={
-                        (showingNavigationDropdown ? "block" : "hidden") +
-                        " sm:hidden"
-                    }
-                >
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800 dark:text-gray-200">
-                                {user.name}
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                {user.email}
-                            </div>
-                        </div>
-
-                        <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route("profile.edit")}>
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                method="post"
-                                href={route("logout")}
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
-            {header && (
-                <header className="bg-white shadow dark:bg-gray-800">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                        {header}
-                    </div>
+                    <ModeToggle />
                 </header>
-            )}
 
-            <main>{children}</main>
-        </div>
+                {/* Page Content Slot */}
+                <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-gray-50 dark:bg-gray-900">
+                    <div className="mx-auto max-w-7xl">
+                        {children}
+                    </div>
+                </main>
+                
+            </SidebarInset>
+        </SidebarProvider>
     );
 }

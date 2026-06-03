@@ -47,8 +47,10 @@ export default function ResourceIndex({ auth, resources }) {
         switch (type) {
             case "car":
                 return <Car className="w-4 h-4 text-blue-500" />;
+            case "hotel":
             case "villa":
                 return <Building className="w-4 h-4 text-emerald-500" />;
+            case "pitch":
             case "sports_pitch":
                 return <Tent className="w-4 h-4 text-orange-500" />;
             default:
@@ -56,16 +58,29 @@ export default function ResourceIndex({ auth, resources }) {
         }
     };
 
+    function getTypeLabel(type) {
+        switch (type) {
+            case "hotel":
+            case "villa":
+                return "Hotel / Stay";
+            case "car":
+                return "Car";
+            case "pitch":
+            case "sports_pitch":
+                return "Pitch";
+            default:
+                return String(type || "").replace("_", " ");
+        }
+    }
+
     // Handle deleting a listing
-    const handleDelete = (id) => {
-        if (
-            confirm(
-                "Are you sure you want to delete this listing? This action cannot be undone.",
-            )
-        ) {
+    function handleDelete(id) {
+        if (confirm(
+            "Are you sure you want to delete this listing? This action cannot be undone."
+        )) {
             router.delete(route("partner.resources.destroy", id));
         }
-    };
+    }
 
     return (
         <AuthenticatedLayout
@@ -172,10 +187,7 @@ export default function ResourceIndex({ auth, resources }) {
                                                                 {resource.title}
                                                             </Link>
                                                             <span className="text-xs text-zinc-500 capitalize">
-                                                                {resource.type.replace(
-                                                                    "_",
-                                                                    " ",
-                                                                )}
+                                                                {getTypeLabel(resource.type)}
                                                             </span>
                                                         </div>
                                                     </div>
@@ -256,11 +268,11 @@ export default function ResourceIndex({ auth, resources }) {
                                                             </DropdownMenuItem>
 
                                                             {/* Edit Listing (You'll build this route later!) */}
-                                                            {/* <DropdownMenuItem asChild className="cursor-pointer">
+                                                            <DropdownMenuItem asChild className="cursor-pointer">
                                                                 <Link href={route('partner.resources.edit', resource.id)} className="flex items-center w-full">
                                                                     <Edit className="mr-2 h-4 w-4" /> Edit Listing
                                                                 </Link>
-                                                            </DropdownMenuItem> */}
+                                                            </DropdownMenuItem>
 
                                                             <DropdownMenuSeparator />
 

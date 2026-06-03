@@ -56,7 +56,7 @@ class ResourceController extends Controller
         // ✅ Load relations
         $resources = $query->with('images')->paginate(10)->withQueryString();
 
-        return Inertia::render('Resources/Index', [
+        return Inertia::render('ResourcesPage/Index', [
             'resources' => $resources,
             'filters' => $request->only([
                 'type',
@@ -75,7 +75,7 @@ class ResourceController extends Controller
         $resource->increment('views');
 
         // 2. Return the public view to the customer
-        return Inertia::render('Resources/Show', [
+        return Inertia::render('ResourcesPage/Show', [
             'resource' => $resource
         ]);
     }
