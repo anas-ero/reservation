@@ -14,6 +14,7 @@ class Reservation extends Model
         'resource_id',
         'start_time',
         'end_time',
+        'guests',
         'total_price',
         'status',
     ];

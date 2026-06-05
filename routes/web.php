@@ -69,7 +69,7 @@ Route::get('/resources', [ResourceController::class, 'index'])->name('public.res
 // Add this line for the new Public Show page!
 Route::get('/resources/{resource}', [ResourceController::class, 'show'])->name('public.resources.show');
 // Your existing reservation routes...
-Route::post('/reservations', [ReservationController::class, 'store']);
+Route::post('/reservations', [ReservationController::class, 'store'])->middleware('auth');
 Route::get('/reservations', [ReservationController::class, 'index']);
 
 

@@ -29,6 +29,9 @@ class Resource extends Model
         'max_guests',
         'exclude_infants',
         'bathrooms',
+        'beds',
+        'bedrooms',
+        'other_rooms',
         'allows_children',
     ];
 
