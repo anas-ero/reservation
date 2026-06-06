@@ -11,6 +11,33 @@ use Inertia\Inertia;
 
 class PartnerResourceController extends Controller
 {
+    private function summarizeRooms(array $rooms): array
+    {
+        $bedrooms = 0;
+        $otherRooms = 0;
+        $beds = 0;
+
+        foreach ($rooms as $room) {
+            $roomType = strtolower(trim((string) ($room['room_type'] ?? '')));
+
+            if (str_starts_with($roomType, 'bedroom')) {
+                $bedrooms++;
+            } else {
+                $otherRooms++;
+            }
+
+            foreach (($room['beds'] ?? []) as $bed) {
+                $beds += max(0, (int) ($bed['count'] ?? 0));
+            }
+        }
+
+        return [
+            'beds' => $beds,
+            'bedrooms' => $bedrooms,
+            'other_rooms' => $otherRooms,
+        ];
+    }
+
     private function typeMap(): array
     {
         return [
@@ -143,24 +170,8 @@ class PartnerResourceController extends Controller
         }
 
         if (isset($validated['rooms'])) {
-            if ($isUpdate) {
-                $resource->rooms()->delete();
-            }
-
-            $resource->rooms()->createMany(
-                collect($validated['rooms'])
-                    ->map(fn ($room) => [
-                        'room_type' => $room['room_type'],
-                        'bed_type' => mb_substr(
-                            collect($room['beds'])
-                                ->map(fn ($bed) => $bed['count'].' '.$bed['type'])
-                                ->join(', '),
-                            0,
-                            100
-                        ),
-                    ])
-                    ->all()
-            );
+            $resource->update($this->summarizeRooms($validated['rooms']));
+            $resource->rooms()->delete();
         }
 
         if (array_key_exists('amenities', $validated)) {
@@ -204,6 +215,8 @@ class PartnerResourceController extends Controller
         );
 
         DB::transaction(function () use ($request, $validated, $typeMap) {
+            $roomCounts = $this->summarizeRooms($validated['rooms']);
+
             $resource = $request->user()->resources()->create([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
@@ -213,6 +226,9 @@ class PartnerResourceController extends Controller
                 'max_guests' => $validated['max_guests'],
                 'exclude_infants' => $validated['exclude_infants'],
                 'bathrooms' => $validated['bathrooms'],
+                'beds' => $roomCounts['beds'],
+                'bedrooms' => $roomCounts['bedrooms'],
+                'other_rooms' => $roomCounts['other_rooms'],
                 'allows_children' => $validated['allows_children'],
                 'breakfast_included' => $validated['breakfast_included'] ?? false,
                 'smoking_allowed' => $validated['smoking_allowed'] ?? false,

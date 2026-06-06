@@ -17,6 +17,7 @@ class ReservationController extends Controller
             'resource_id' => ['required', 'exists:resources,id'],
             'start_time' => ['required', 'date'],
             'end_time' => ['required', 'date', 'after:start_time'],
+            'guests' => ['required', 'integer', 'min:1'],
         ]);
 
         // 🚨 Check overlap
@@ -40,6 +41,7 @@ class ReservationController extends Controller
             'resource_id' => $validated['resource_id'],
             'start_time' => $validated['start_time'],
             'end_time' => $validated['end_time'],
+            'guests' => $validated['guests'],
             'status' => 'confirmed',
         ]);
 
