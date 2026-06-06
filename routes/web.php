@@ -10,6 +10,8 @@ use App\Http\Middleware\CheckOwnerVerified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Auth\PartnerRegisteredUserController;
+use App\Http\Controllers\RatingController;
 
 Route::get('/', [HeroController::class, 'index'])->name('home');
 
@@ -70,6 +72,7 @@ Route::get('/resources', [ResourceController::class, 'index'])->name('public.res
 Route::get('/resources/{resource}', [ResourceController::class, 'show'])->name('public.resources.show');
 // Your existing reservation routes...
 Route::post('/reservations', [ReservationController::class, 'store'])->middleware('auth');
+Route::post('/resources/{resource}/ratings', [RatingController::class, 'store'])->middleware('auth')->name('ratings.store');
 Route::get('/reservations', [ReservationController::class, 'index']);
 
 

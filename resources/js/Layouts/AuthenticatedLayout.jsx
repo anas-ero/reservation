@@ -14,13 +14,13 @@ import {
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel
-} from "@/components/ui/sidebar";
+} from "@/Components/ui/sidebar";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/Components/ui/dropdown-menu";
 import { 
     Calendar, 
     MapPin, 
@@ -30,7 +30,7 @@ import {
     LogOut, 
     ChevronUp 
 } from "lucide-react";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+import { ModeToggle } from "@/Components/ui/mode-toggle";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;

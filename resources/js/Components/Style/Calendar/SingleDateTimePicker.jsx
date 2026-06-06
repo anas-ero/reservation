@@ -1,10 +1,10 @@
 import { useState } from "react"
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from "@/Components/ui/calendar"
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@/components/ui/popover"
+} from "@/Components/ui/popover"
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 

@@ -7,10 +7,11 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-} from "@/components/ui/drawer";
+} from "@/Components/ui/drawer";
 import { useState, useEffect } from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import ResourceReviews from "@/Components/Resource/ResourceReviews";
 import {
     Star,
     MapPin,
@@ -45,15 +46,15 @@ import {
     Bed,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import {
     Card,
     CardContent,
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+} from "@/Components/ui/card";
+import { Separator } from "@/Components/ui/separator";
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 
@@ -380,7 +381,7 @@ function Lightbox({ images, onClose }) {
 
 // ─── Main Component ─────────────────────────────────────────────────────────────
 
-export default function Show({ auth, resource }) {
+export default function Show({ auth, resource, ratings }) {
     const formatDateInput = (date) => {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -689,7 +690,7 @@ export default function Show({ auth, resource }) {
                                 </span>
                                 <span className="text-zinc-400">·</span>
                                 <button className="underline underline-offset-2 hover:text-zinc-900 transition-colors">
-                                    124 reviews
+                                     reviews
                                 </button>
                             </span>
                             {item.views > 0 && (
@@ -889,92 +890,7 @@ export default function Show({ auth, resource }) {
                         <Separator />
 
                         {/* Reviews */}
-                        <div className="space-y-6">
-                            <div className="flex items-center gap-3">
-                                <h3 className="text-lg font-bold text-zinc-950">
-                                    Reviews
-                                </h3>
-                                <div className="flex items-center gap-1.5 bg-zinc-900 text-white rounded-full px-3 py-1">
-                                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                                    <span className="text-sm font-bold">
-                                        4.9
-                                    </span>
-                                    <span className="text-zinc-400 text-xs">
-                                        · 124
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Score breakdown */}
-                            <div className="grid grid-cols-2 gap-x-8 gap-y-3">
-                                {REVIEWS_BREAKDOWN.map(({ label, score }) => (
-                                    <div
-                                        key={label}
-                                        className="flex items-center gap-3"
-                                    >
-                                        <span className="text-sm text-zinc-600 w-28 flex-shrink-0">
-                                            {label}
-                                        </span>
-                                        <div className="flex-1 h-1.5 bg-zinc-100 rounded-full overflow-hidden">
-                                            <div
-                                                className="h-full bg-zinc-800 rounded-full"
-                                                style={{
-                                                    width: `${(score / 5) * 100}%`,
-                                                }}
-                                            />
-                                        </div>
-                                        <span className="text-sm font-semibold text-zinc-800 w-6 text-right">
-                                            {score}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Review cards */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                {MOCK_REVIEWS.map((review) => (
-                                    <div
-                                        key={review.id}
-                                        className="bg-card rounded-2xl border border-border p-5 shadow-sm hover:shadow-md transition-shadow space-y-3"
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <InitialsAvatar
-                                                initials={review.initials}
-                                                size="sm"
-                                            />
-                                            <div>
-                                                <div className="text-sm font-semibold text-zinc-900">
-                                                    {review.name}
-                                                </div>
-                                                <div className="text-xs text-zinc-400">
-                                                    {review.date}
-                                                </div>
-                                            </div>
-                                            <div className="ml-auto flex">
-                                                {Array.from({
-                                                    length: review.rating,
-                                                }).map((_, i) => (
-                                                    <Star
-                                                        key={i}
-                                                        className="w-3 h-3 fill-amber-400 text-amber-400"
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <p className="text-sm text-zinc-600 leading-relaxed">
-                                            {review.text}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <Button
-                                variant="outline"
-                                className="rounded-xl border-2 border-zinc-800 font-semibold hover:bg-zinc-900 hover:text-white transition-all duration-200"
-                            >
-                                Show all 124 reviews
-                            </Button>
-                        </div>
+                        <ResourceReviews resource={resource} auth={auth} />
                     </div>
 
                     {/* ── Booking Widget ── */}
@@ -994,7 +910,7 @@ export default function Show({ auth, resource }) {
                                         <div className="flex items-center gap-1 text-sm">
                                             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                                             <span className="font-semibold text-zinc-800">
-                                                4.9
+                                                {item.rating?.toFixed(1)}
                                             </span>
                                             <span className="text-zinc-400 text-xs ml-0.5">
                                                 · 124

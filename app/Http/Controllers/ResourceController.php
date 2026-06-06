@@ -73,7 +73,7 @@ class ResourceController extends Controller
     {
         // 1. Add +1 to the views every time this page loads!
         $resource->increment('views');
-        $resource->loadMissing('owner');
+        $resource->loadMissing(['owner', 'images', 'ratings.user']);
 
         // 2. Return the public view to the customer
         return Inertia::render('ResourcesPage/Show', [

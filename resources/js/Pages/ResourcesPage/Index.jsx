@@ -6,9 +6,9 @@ import { Filter, MapPin } from "lucide-react"; // Make sure to install lucide-re
 import {
     ButtonGroup,
     ButtonGroupSeparator,
-} from "@/components/ui/button-group";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input"; // Assuming you have the Shadcn Input installed
+} from "@/Components/ui/button-group";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input"; 
 import ResourceCard from "@/Components/Resource/ResourceCard";
 
 export default function Index({ auth, resources, filters }) {

@@ -13,8 +13,8 @@ import {
     Tent,
     Users,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/Components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
 
 const LISTING_TYPES = [
     {

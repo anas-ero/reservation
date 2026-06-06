@@ -1,63 +1,101 @@
 import { Link } from "@inertiajs/react";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { Search } from "lucide-react";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+import { ModeToggle } from "@/Components/ui/mode-toggle";
 
 export default function MainLayout({ children, auth }) {
     return (
-        <TooltipProvider>
         <div className="min-h-screen bg-zinc-50 text-zinc-950">
             <header className="bg-white border-b border-zinc-200 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center gap-2">
                         <div className="bg-zinc-950 p-1.5 rounded-md">
-                            <Search className="w-5 h-5 text-white" />
+                            <Search className="h-5 w-5 text-white" />
                         </div>
-                        <span className="text-xl font-extrabold tracking-tight">
-                            ReserveFlow
-                        </span>
+                        <span className="text-xl font-bold tracking-tight">Reserve</span>
                     </div>
 
+                    <nav className="hidden md:flex items-center gap-8">
+                        <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-zinc-950 transition-colors">Accueil</Link>
+                        <Link href="/resources" className="text-sm font-medium text-zinc-600 hover:text-zinc-950 transition-colors">Parcourir</Link>
+                        <Link href="/reservations" className="text-sm font-medium text-zinc-600 hover:text-zinc-950 transition-colors">Mes Réservations</Link>
+                    </nav>
+
                     <div className="flex items-center gap-4">
-                        <Link
-                            href={route("partner.register")}
-                            className="text-sm font-medium text-zinc-600 hover:text-zinc-950 hidden md:block"
-                        >
-                            Partner with us
-                        </Link>
+                        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-zinc-100 rounded-full border border-zinc-200">
+                            <Search className="h-4 w-4 text-zinc-500" />
+                            <input 
+                                type="text" 
+                                placeholder="Rechercher..." 
+                                className="bg-transparent border-none text-xs focus:ring-0 w-32"
+                            />
+                        </div>
+                        <ModeToggle />
                         {auth?.user ? (
-                            <Link
-                                href={route("dashboard")}
-                                className="text-sm font-medium text-zinc-950 hover:underline"
+                            <Link 
+                                href="/dashboard" 
+                                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 h-9 px-4 py-2"
                             >
                                 Dashboard
                             </Link>
                         ) : (
-                            <div className="flex items-center gap-3">
-                                <Link
-                                    href={route("login")}
-                                    className="text-sm font-medium text-zinc-950 hover:text-zinc-700 transition-colors"
+                            <div className="flex items-center gap-2">
+                                <Link href="/login" className="text-sm font-medium text-zinc-600 hover:text-zinc-950">Se connecter</Link>
+                                <Link 
+                                    href="/register" 
+                                    className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 h-9 px-4 py-2"
                                 >
-                                    Sign in
+                                    S'inscrire
                                 </Link>
-                                <Link
-                                    href={route("register")}
-                                    className="hidden sm:inline-flex h-9 items-center justify-center rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-zinc-50 shadow transition-colors hover:bg-zinc-800"
-                                >
-                                    Register
-                                </Link>
-                                <ModeToggle />
-
                             </div>
                         )}
                     </div>
                 </div>
             </header>
 
-            {/* Page content */}
-            <main>{children}</main>
-        </div>
-        </TooltipProvider>
-    );
+            <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+                {children}
+            </main>
 
+            <footer className="bg-white border-t border-zinc-200 py-12">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div className="col-span-1 md:col-span-2">
+                            <div className="flex items-center gap-2 mb-4">
+                                <div className="bg-zinc-950 p-1 rounded">
+                                    <Search className="h-4 w-4 text-white" />
+                                </div>
+                                <span className="text-lg font-bold">Reserve</span>
+                            </div>
+                            <p className="text-sm text-zinc-500 max-w-xs">
+                                La plateforme moderne pour réserver vos espaces de travail, salles de réunion et bureaux partagés en quelques clics.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-sm mb-4 uppercase tracking-wider">Liens Rapides</h4>
+                            <ul className="space-y-2">
+                                <li><Link href="/" className="text-sm text-zinc-500 hover:text-zinc-950">Accueil</Link></li>
+                                <li><Link href="/resources" className="text-sm text-zinc-500 hover:text-zinc-950">Parcourir</Link></li>
+                                <li><Link href="/reservations" className="text-sm text-zinc-500 hover:text-zinc-950">Réservations</Link></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-sm mb-4 uppercase tracking-wider">Légal</h4>
+                            <ul className="space-y-2">
+                                <li><Link href="#" className="text-sm text-zinc-500 hover:text-zinc-950">Confidentialité</Link></li>
+                                <li><Link href="#" className="text-sm text-zinc-500 hover:text-zinc-950">Conditions</Link></li>
+                                <li><Link href="#" className="text-sm text-zinc-500 hover:text-zinc-950">Contact</Link></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="mt-12 pt-8 border-t border-zinc-100 flex justify-between items-center">
+                        <p className="text-xs text-zinc-400">© 2026 Reserve Platform. Tous droits réservés.</p>
+                        <div className="flex gap-4">
+                            <span className="text-xs text-zinc-400">FR</span>
+                            <span className="text-xs text-zinc-400">EN</span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    );
 }

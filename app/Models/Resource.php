@@ -9,6 +9,7 @@ use App\Models\ResourceMeta;
 use App\Models\AvailabilityRule;
 use App\Models\Unavailability;
 use App\Models\Review;
+use App\Models\Rating;
 use App\Models\ResourceRoom;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -74,6 +75,11 @@ class Resource extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+    // Ratings
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
     }
 
 }

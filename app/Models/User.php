@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Reservation;
 use App\Models\Resource;
 use App\Models\Review;
+use App\Models\Rating;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 class User extends Authenticatable
 {
@@ -35,6 +36,11 @@ class User extends Authenticatable
     // reviews written by the user
     public function reviews() {
         return $this->hasMany(Review::class);
+    }
+
+    // ratings written by the user
+    public function ratings() {
+        return $this->hasMany(Rating::class);
     }
 
 }

@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Card, CardContent } from "@/Components/ui/card";
 import {
     Field,
     FieldDescription,
     FieldGroup,
     FieldLabel,
     FieldSeparator,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+} from "@/Components/ui/field";
+import { Input } from "@/Components/ui/input";
 
 export function LoginForm({ 
     className, 
