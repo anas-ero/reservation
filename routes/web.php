@@ -60,9 +60,7 @@ Route::middleware(['auth', 'role:owner', CheckOwnerVerified::class])->prefix('pa
 
 // --- 2. SUPER ADMIN ROUTES ---
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('AdminDashboard');
-    })->name('admin.dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
 
 // --- 3. PUBLIC APP ROUTES ---
