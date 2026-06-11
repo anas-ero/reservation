@@ -1,5 +1,5 @@
 import { Link, usePage } from "@inertiajs/react";
-import ApplicationLogo from "@/Components/ApplicationLogo";
+import ApplicationLogo from "@/components/ApplicationLogo";
 import {
     Sidebar,
     SidebarContent,
@@ -13,24 +13,24 @@ import {
     SidebarMenuButton,
     SidebarGroup,
     SidebarGroupContent,
-    SidebarGroupLabel
-} from "@/Components/ui/sidebar";
+    SidebarGroupLabel,
+} from "@/components/ui/sidebar";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu";
-import { 
-    Calendar, 
-    MapPin, 
-    LayoutDashboard, 
-    Users, 
-    User, 
-    LogOut, 
-    ChevronUp 
+} from "@/components/ui/dropdown-menu";
+import {
+    Calendar,
+    MapPin,
+    LayoutDashboard,
+    Users,
+    User,
+    LogOut,
+    ChevronUp,
 } from "lucide-react";
-import { ModeToggle } from "@/Components/ui/mode-toggle";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -39,7 +39,6 @@ export default function AuthenticatedLayout({ header, children }) {
         <SidebarProvider>
             {/* 1. THE SIDEBAR */}
             <Sidebar variant="inset">
-                
                 {/* Logo Area */}
                 <SidebarHeader>
                     <div className="flex h-12 items-center px-4 mt-2">
@@ -55,12 +54,16 @@ export default function AuthenticatedLayout({ header, children }) {
                         <SidebarGroupLabel>Menu</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                
                                 {/* CUSTOMER LINKS */}
                                 {user.role === "customer" && (
                                     <>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild isActive={route().current("dashboard")}>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={route().current(
+                                                    "dashboard",
+                                                )}
+                                            >
                                                 <Link href={route("dashboard")}>
                                                     <Calendar className="mr-2 h-4 w-4" />
                                                     <span>My Bookings</span>
@@ -68,7 +71,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild isActive={route().current("resources.*")}>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={route().current(
+                                                    "resources.*",
+                                                )}
+                                            >
                                                 <Link href="/resources">
                                                     <MapPin className="mr-2 h-4 w-4" />
                                                     <span>Find a Place</span>
@@ -82,16 +90,34 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {user.role === "owner" && (
                                     <>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild isActive={route().current("owner.dashboard")}>
-                                                <Link href={route("owner.dashboard")}>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={route().current(
+                                                    "owner.dashboard",
+                                                )}
+                                            >
+                                                <Link
+                                                    href={route(
+                                                        "owner.dashboard",
+                                                    )}
+                                                >
                                                     <LayoutDashboard className="mr-2 h-4 w-4" />
                                                     <span>Partner Hub</span>
                                                 </Link>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild isActive={route().current("partner.resources")}>
-                                                <Link href={route('partner.resources.index')}>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={route().current(
+                                                    "partner.resources",
+                                                )}
+                                            >
+                                                <Link
+                                                    href={route(
+                                                        "partner.resources.index",
+                                                    )}
+                                                >
                                                     <MapPin className="mr-2 h-4 w-4" />
                                                     <span>Manage Listings</span>
                                                 </Link>
@@ -104,15 +130,29 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {user.role === "admin" && (
                                     <>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild isActive={route().current("admin.dashboard")}>
-                                                <Link href={route("admin.dashboard")}>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={route().current(
+                                                    "admin.dashboard",
+                                                )}
+                                            >
+                                                <Link
+                                                    href={route(
+                                                        "admin.dashboard",
+                                                    )}
+                                                >
                                                     <LayoutDashboard className="mr-2 h-4 w-4" />
                                                     <span>Admin Overview</span>
                                                 </Link>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
                                         <SidebarMenuItem>
-                                            <SidebarMenuButton asChild isActive={route().current("admin.users")}>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={route().current(
+                                                    "admin.users",
+                                                )}
+                                            >
                                                 <Link href="/admin/users">
                                                     <Users className="mr-2 h-4 w-4" />
                                                     <span>Manage Users</span>
@@ -121,7 +161,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                         </SidebarMenuItem>
                                     </>
                                 )}
-
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>
@@ -132,27 +171,45 @@ export default function AuthenticatedLayout({ header, children }) {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <DropdownMenu>
-                                <DropdownMenuTrigger >
-                                    <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                                <DropdownMenuTrigger>
+                                    <SidebarMenuButton
+                                        size="lg"
+                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                                    >
                                         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400 font-bold">
                                             {user.name.charAt(0)}
                                         </div>
                                         <div className="flex flex-col gap-0.5 leading-none">
-                                            <span className="font-semibold text-sm">{user.name}</span>
-                                            <span className="text-xs text-muted-foreground capitalize">{user.role}</span>
+                                            <span className="font-semibold text-sm">
+                                                {user.name}
+                                            </span>
+                                            <span className="text-xs text-muted-foreground capitalize">
+                                                {user.role}
+                                            </span>
                                         </div>
                                         <ChevronUp className="ml-auto h-4 w-4" />
                                     </SidebarMenuButton>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent side="top" className="w-[--radix-dropdown-menu-trigger-width]">
+                                <DropdownMenuContent
+                                    side="top"
+                                    className="w-[--radix-dropdown-menu-trigger-width]"
+                                >
                                     <DropdownMenuItem asChild>
-                                        <Link href={route("profile.edit")} className="w-full flex items-center cursor-pointer">
+                                        <Link
+                                            href={route("profile.edit")}
+                                            className="w-full flex items-center cursor-pointer"
+                                        >
                                             <User className="mr-2 h-4 w-4" />
                                             <span>Profile</span>
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild>
-                                        <Link method="post" href={route("logout")} as="button" className="w-full flex items-center cursor-pointer">
+                                        <Link
+                                            method="post"
+                                            href={route("logout")}
+                                            as="button"
+                                            className="w-full flex items-center cursor-pointer"
+                                        >
                                             <LogOut className="mr-2 h-4 w-4" />
                                             <span>Log Out</span>
                                         </Link>
@@ -166,7 +223,6 @@ export default function AuthenticatedLayout({ header, children }) {
 
             {/* 2. THE MAIN CONTENT AREA */}
             <SidebarInset>
-                
                 {/* Top Header with Hamburger Trigger */}
                 <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 dark:bg-gray-800 dark:border-gray-700">
                     <SidebarTrigger className="-ml-1" />
@@ -182,11 +238,8 @@ export default function AuthenticatedLayout({ header, children }) {
 
                 {/* Page Content Slot */}
                 <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-gray-50 dark:bg-gray-900">
-                    <div className="mx-auto max-w-7xl">
-                        {children}
-                    </div>
+                    <div className="mx-auto max-w-7xl">{children}</div>
                 </main>
-                
             </SidebarInset>
         </SidebarProvider>
     );

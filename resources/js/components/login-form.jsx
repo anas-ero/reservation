@@ -1,24 +1,24 @@
 import { cn } from "@/lib/utils";
-import { Button } from "@/Components/ui/button";
-import { Card, CardContent } from "@/Components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
     Field,
     FieldDescription,
     FieldGroup,
     FieldLabel,
     FieldSeparator,
-} from "@/Components/ui/field";
-import { Input } from "@/Components/ui/input";
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 
-export function LoginForm({ 
-    className, 
-    onSubmit, 
-    data, 
-    setData, 
-    errors, 
-    processing, 
-    canResetPassword, 
-    ...props 
+export function LoginForm({
+    className,
+    onSubmit,
+    data,
+    setData,
+    errors,
+    processing,
+    canResetPassword,
+    ...props
 }) {
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -34,7 +34,7 @@ export function LoginForm({
                                     Login to your account
                                 </p>
                             </div>
-                            
+
                             <Field>
                                 <FieldLabel htmlFor="email">Email</FieldLabel>
                                 <Input
@@ -42,15 +42,19 @@ export function LoginForm({
                                     type="email"
                                     placeholder="m@example.com"
                                     value={data.email}
-                                    onChange={(e) => setData("email", e.target.value)}
+                                    onChange={(e) =>
+                                        setData("email", e.target.value)
+                                    }
                                     required
                                 />
                                 {/* Show Laravel Email Validation Errors */}
                                 {errors.email && (
-                                    <span className="text-sm text-red-500 font-medium">{errors.email}</span>
+                                    <span className="text-sm text-red-500 font-medium">
+                                        {errors.email}
+                                    </span>
                                 )}
                             </Field>
-                            
+
                             <Field>
                                 <div className="flex items-center">
                                     <FieldLabel htmlFor="password">
@@ -58,26 +62,30 @@ export function LoginForm({
                                     </FieldLabel>
                                     {canResetPassword && (
                                         <a
-                                            href={route('password.request')}
+                                            href={route("password.request")}
                                             className="ml-auto text-sm underline-offset-2 hover:underline"
                                         >
                                             Forgot your password?
                                         </a>
                                     )}
                                 </div>
-                                <Input 
-                                    id="password" 
-                                    type="password" 
+                                <Input
+                                    id="password"
+                                    type="password"
                                     value={data.password}
-                                    onChange={(e) => setData("password", e.target.value)}
-                                    required 
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
+                                    required
                                 />
                                 {/* Show Laravel Password Validation Errors */}
                                 {errors.password && (
-                                    <span className="text-sm text-red-500 font-medium">{errors.password}</span>
+                                    <span className="text-sm text-red-500 font-medium">
+                                        {errors.password}
+                                    </span>
                                 )}
                             </Field>
-                            
+
                             <Field>
                                 <Button type="submit" disabled={processing}>
                                     {processing ? "Logging in..." : "Login"}
@@ -86,7 +94,7 @@ export function LoginForm({
 
                             <FieldDescription className="text-center">
                                 Don&apos;t have an account?{" "}
-                                <a href={route('register')}>Sign up</a>
+                                <a href={route("register")}>Sign up</a>
                             </FieldDescription>
                         </FieldGroup>
                     </form>

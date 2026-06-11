@@ -56,3 +56,45 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+import { defineConfig } from "vite";
+import laravel from "laravel-vite-plugin";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: "resources/js/app.jsx",
+            ssr: "resources/js/ssr.jsx",
+            refresh: true,
+        }),
+        react(),
+        tailwindcss(),
+    ],
+    resolve: {
+    alias: [
+        {
+            find: /^@\/Components/,
+            replacement: path.resolve(
+                __dirname,
+                'resources/js/components'
+            ),
+        },
+        {
+            find: /^@\/Pages/,
+            replacement: path.resolve(
+                __dirname,
+                'resources/js/pages'
+            ),
+        },
+        {
+            find: '@',
+            replacement: path.resolve(
+                __dirname,
+                'resources/js'
+            ),
+        },
+    ],
+},
+});

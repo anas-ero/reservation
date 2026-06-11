@@ -1,29 +1,29 @@
-import '../css/app.css';
+import "../css/app.css";
 
+import { createInertiaApp } from "@inertiajs/react";
+import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { createRoot, hydrateRoot } from "react-dom/client";
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
-import { createInertiaApp } from '@inertiajs/react';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { createRoot, hydrateRoot } from 'react-dom/client';
-import { ThemeProvider } from '@/Components/ui/theme-provider';
-import { TooltipProvider } from '@/Components/ui/tooltip';
-
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>
         resolvePageComponent(
-            `./Pages/${name}.jsx`,
-            import.meta.glob('./Pages/**/*.jsx'),
+            `./pages/${name}.jsx`,
+            import.meta.glob("./pages/**/*.jsx"),
         ),
     setup({ el, App, props }) {
         if (import.meta.env.SSR) {
-            hydrateRoot(el, 
+            hydrateRoot(
+                el,
                 <ThemeProvider>
                     <TooltipProvider>
                         <App {...props} />
                     </TooltipProvider>
-                </ThemeProvider>
+                </ThemeProvider>,
             );
             return;
         }
@@ -33,10 +33,10 @@ createInertiaApp({
                 <TooltipProvider>
                     <App {...props} />
                 </TooltipProvider>
-            </ThemeProvider>
+            </ThemeProvider>,
         );
     },
     progress: {
-        color: '#4B5563',
+        color: "#4B5563",
     },
 });
