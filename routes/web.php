@@ -1,17 +1,19 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminResourceController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\Partner\PartnerResourceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Middleware\CheckOwnerVerified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\Auth\PartnerRegisteredUserController;
-use App\Http\Controllers\RatingController;
+use App\Http\Controllers\AdminTransactionController;
 
 Route::get('/', [HeroController::class, 'index'])->name('home');
 
@@ -30,7 +32,7 @@ Route::get('/dashboard', function (Request $request) {
     }
 
     // Default for Customers
-    return Inertia::render('Dashboard');
+    return Inertia::render('CustomerDashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // --- PROFILE ROUTES ---
@@ -60,7 +62,18 @@ Route::middleware(['auth', 'role:owner', CheckOwnerVerified::class])->prefix('pa
 
 // --- 2. SUPER ADMIN ROUTES ---
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::post('/partners/{user}/approve', [AdminController::class, 'approvePartner'])->name('partners.approve');
+
+    // Platform Listings Management Routes
+    Route::get('/resources', [AdminResourceController::class, 'index'])->name('admin.resources');
+    Route::patch('/resources/{resource}/toggle', [AdminResourceController::class, 'toggleStatus'])->name('admin.resources.toggle');
+    // Global Bookings Ledger Route
+    Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('transactions');
+    // system settings route
+    Route::get('/settings', function () {
+        return Inertia::render('Admin/Settings/Index');
+    })->name('admin.settings');
 });
 
 // --- 3. PUBLIC APP ROUTES ---
@@ -72,6 +85,5 @@ Route::get('/resources/{resource}', [ResourceController::class, 'show'])->name('
 Route::post('/reservations', [ReservationController::class, 'store'])->middleware('auth');
 Route::post('/resources/{resource}/ratings', [RatingController::class, 'store'])->middleware('auth')->name('ratings.store');
 Route::get('/reservations', [ReservationController::class, 'index']);
-
 
 require __DIR__.'/auth.php';

@@ -21,31 +21,23 @@ export default function MainLayout({ children, auth }) {
                             href="/"
                             className="text-sm font-medium text-zinc-600 hover:text-zinc-950 transition-colors"
                         >
-                            Accueil
+                            Home
                         </Link>
                         <Link
                             href="/resources"
                             className="text-sm font-medium text-zinc-600 hover:text-zinc-950 transition-colors"
                         >
-                            Parcourir
+                            Browse
                         </Link>
                         <Link
                             href="/reservations"
                             className="text-sm font-medium text-zinc-600 hover:text-zinc-950 transition-colors"
                         >
-                            Mes Réservations
+                            My Reservations
                         </Link>
                     </nav>
 
                     <div className="flex items-center gap-4">
-                        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-zinc-100 rounded-full border border-zinc-200">
-                            <Search className="h-4 w-4 text-zinc-500" />
-                            <input
-                                type="text"
-                                placeholder="Rechercher..."
-                                className="bg-transparent border-none text-xs focus:ring-0 w-32"
-                            />
-                        </div>
                         <ModeToggle />
                         {auth?.user ? (
                             <Link
@@ -55,18 +47,24 @@ export default function MainLayout({ children, auth }) {
                                 Dashboard
                             </Link>
                         ) : (
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-4">
+                                <Link
+                                    href={route("partner.register")}
+                                    className="text-sm font-medium text-zinc-600 hover:text-zinc-950"
+                                >
+                                    Become a Partner
+                                </Link>
                                 <Link
                                     href="/login"
                                     className="text-sm font-medium text-zinc-600 hover:text-zinc-950"
                                 >
-                                    Se connecter
+                                    Login
                                 </Link>
                                 <Link
                                     href="/register"
                                     className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-zinc-900 text-zinc-50 shadow hover:bg-zinc-900/90 h-9 px-4 py-2"
                                 >
-                                    S'inscrire
+                                    Register
                                 </Link>
                             </div>
                         )}
@@ -91,14 +89,13 @@ export default function MainLayout({ children, auth }) {
                                 </span>
                             </div>
                             <p className="text-sm text-zinc-500 max-w-xs">
-                                La plateforme moderne pour réserver vos espaces
-                                de travail, salles de réunion et bureaux
-                                partagés en quelques clics.
+                                The modern platform to reserve your workspaces,
+                                meeting rooms, and shared offices in just a few clicks.
                             </p>
                         </div>
                         <div>
                             <h4 className="font-bold text-sm mb-4 uppercase tracking-wider">
-                                Liens Rapides
+                                Quick Links
                             </h4>
                             <ul className="space-y-2">
                                 <li>
@@ -106,7 +103,7 @@ export default function MainLayout({ children, auth }) {
                                         href="/"
                                         className="text-sm text-zinc-500 hover:text-zinc-950"
                                     >
-                                        Accueil
+                                        Home
                                     </Link>
                                 </li>
                                 <li>
@@ -114,7 +111,7 @@ export default function MainLayout({ children, auth }) {
                                         href="/resources"
                                         className="text-sm text-zinc-500 hover:text-zinc-950"
                                     >
-                                        Parcourir
+                                        Browse
                                     </Link>
                                 </li>
                                 <li>
@@ -122,14 +119,14 @@ export default function MainLayout({ children, auth }) {
                                         href="/reservations"
                                         className="text-sm text-zinc-500 hover:text-zinc-950"
                                     >
-                                        Réservations
+                                        Reservations
                                     </Link>
                                 </li>
                             </ul>
                         </div>
                         <div>
                             <h4 className="font-bold text-sm mb-4 uppercase tracking-wider">
-                                Légal
+                                Legal
                             </h4>
                             <ul className="space-y-2">
                                 <li>
@@ -137,7 +134,7 @@ export default function MainLayout({ children, auth }) {
                                         href="#"
                                         className="text-sm text-zinc-500 hover:text-zinc-950"
                                     >
-                                        Confidentialité
+                                        Privacy
                                     </Link>
                                 </li>
                                 <li>
@@ -145,7 +142,7 @@ export default function MainLayout({ children, auth }) {
                                         href="#"
                                         className="text-sm text-zinc-500 hover:text-zinc-950"
                                     >
-                                        Conditions
+                                        Terms
                                     </Link>
                                 </li>
                                 <li>
@@ -161,10 +158,9 @@ export default function MainLayout({ children, auth }) {
                     </div>
                     <div className="mt-12 pt-8 border-t border-zinc-100 flex justify-between items-center">
                         <p className="text-xs text-zinc-400">
-                            © 2026 Reserve Platform. Tous droits réservés.
+                            © 2026 Reserve Platform. All rights reserved.
                         </p>
                         <div className="flex gap-4">
-                            <span className="text-xs text-zinc-400">FR</span>
                             <span className="text-xs text-zinc-400">EN</span>
                         </div>
                     </div>

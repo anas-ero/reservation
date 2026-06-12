@@ -21,16 +21,17 @@ class Reservation extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function resource()
     {
-        return $this->belongsTo(Resource::class);
+        return $this->belongsTo(Resource::class, 'resource_id');
     }
 
     public function payment()
     {
         return $this->hasOne(Payment::class);
     }
+
 }

@@ -429,15 +429,17 @@ export default function Show({ auth, resource, ratings }) {
     defaultCheckInDate.setDate(defaultCheckInDate.getDate() + 1);
     const defaultCheckOutDate = new Date(defaultCheckInDate);
     defaultCheckOutDate.setDate(defaultCheckOutDate.getDate() + 1);
-
+    // calculate nights, service fee, and total based on defaults for the reservation form
     const { data, setData, post, processing, errors } = useForm({
         resource_id: item.id || "",
         start_time: formatDateInput(defaultCheckInDate),
         end_time: formatDateInput(defaultCheckOutDate),
+
         guests: 2,
     });
-
-    const nights = calculateNights(data.start_time, data.end_time);
+    
+    
+    const nights = calculateNights(formatDateInput(defaultCheckInDate), formatDateInput(defaultCheckOutDate));
     const serviceFee = Math.round(price * nights * 0.12);
     const total = price * nights + serviceFee;
 
@@ -475,6 +477,7 @@ export default function Show({ auth, resource, ratings }) {
                         formErrors.start_time ||
                         formErrors.end_time ||
                         formErrors.guests ||
+
                         "This reservation could not be completed.",
                 });
                 setBookingSheetOpen(true);

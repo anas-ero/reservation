@@ -11,7 +11,7 @@ class ResourceController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Resource::query();
+        $query = Resource::where('status', 'active');
 
         // 🔁 Map frontend types → DB types
         $typeMap = [

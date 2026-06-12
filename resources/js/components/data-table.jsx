@@ -353,7 +353,7 @@ export function DataTable({ data: initialData = [] }) {
     const [sorting, setSorting] = React.useState([]);
     const [pagination, setPagination] = React.useState({
         pageIndex: 0,
-        pageSize: 10,
+        pagesize: 10,
     });
     const sortableId = React.useId();
     const sensors = useSensors(
@@ -564,9 +564,9 @@ export function DataTable({ data: initialData = [] }) {
                                 Rows per page
                             </Label>
                             <Select
-                                value={`${table.getState().pagination.pageSize}`}
+                                value={`${table.getState().pagination.pagesize}`}
                                 onValueChange={(value) => {
-                                    table.setPageSize(Number(value));
+                                    table.setpagesize(Number(value));
                                 }}
                             >
                                 <SelectTrigger
@@ -576,19 +576,19 @@ export function DataTable({ data: initialData = [] }) {
                                 >
                                     <SelectValue
                                         placeholder={
-                                            table.getState().pagination.pageSize
+                                            table.getState().pagination.pagesize
                                         }
                                     />
                                 </SelectTrigger>
                                 <SelectContent side="top">
                                     <SelectGroup>
                                         {[10, 20, 30, 40, 50].map(
-                                            (pageSize) => (
+                                            (pagesize) => (
                                                 <SelectItem
-                                                    key={pageSize}
-                                                    value={`${pageSize}`}
+                                                    key={pagesize}
+                                                    value={`${pagesize}`}
                                                 >
-                                                    {pageSize}
+                                                    {pagesize}
                                                 </SelectItem>
                                             ),
                                         )}

@@ -1,58 +1,87 @@
 <?php
 
-namespace Database\Seeders;
+namespace database\seeders;
 
 use App\Models\User;
 use App\Models\Resource;
-use App\Models\ResourceImage;
-use App\Models\ResourceMeta;
-use App\Models\AvailabilityRule;
-use App\Models\Reservation;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
+    /**
+     * Seed the application's database.
+     */
     public function run(): void
-{
-    // Create users
-    $owners = User::factory()->count(5)->create(['role' => 'owner']);
-    $customers = User::factory()->count(10)->create(['role' => 'customer']);
-
-    // Create resources
-    $resources = Resource::factory()->count(15)->create();
-
-    // images + meta + availability
-    foreach ($resources as $resource) {
-
-        ResourceImage::create([
-            'resource_id' => $resource->id,
-            'path' => 'images/default.jpg',
-            'is_primary' => true,
+    {
+        // 1. CREATE SUPER ADMIN
+        User::create([
+            'name' => 'Super Admin',
+            'email' => 'admin@platform.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+            'is_verified' => true,
         ]);
 
-        ResourceMeta::create([
-            'resource_id' => $resource->id,
-            'key' => 'example',
-            'value' => 'value',
+        // 2. CREATE A VERIFIED OWNER / PARTNER
+        $owner = User::create([
+            'name' => 'Anas Vehicle Rental',
+            'email' => 'owner@platform.com',
+            'password' => Hash::make('password'),
+            'role' => 'owner',
+            'is_verified' => true, // Already verified so they can host listings
         ]);
 
-        // availability (only useful for pitch)
-        for ($day = 0; $day <= 6; $day++) {
-            AvailabilityRule::create([
-                'resource_id' => $resource->id,
-                'day_of_week' => $day,
-                'start_time' => '09:00:00',
-                'end_time' => '23:00:00',
-            ]);
-        }
+        // 3. CREATE A PENDING OWNER (For testing your Admin Approval Table!)
+        User::create([
+            'name' => 'Atlas Hotel Group',
+            'email' => 'pending@platform.com',
+            'password' => Hash::make('password'),
+            'role' => 'owner',
+            'is_verified' => false, // Unverified so they show up as an action item
+        ]);
+
+        // 4. CREATE A STANDARD CLIENT / CUSTOMER
+        User::create([
+            'name' => 'Amine El Amrani',
+            'email' => 'client@platform.com',
+            'password' => Hash::make('password'),
+            'role' => 'customer',
+            'is_verified' => true,
+        ]);
+
+        // 5. SEED DUMMY RESOURCES (Linked directly to your verified owner!)
+        Resource::create([
+            'title' => 'Dacia Logan (2024 Edition)',
+            'description' => 'Clean rental car, economical diesel engine, perfect for city driving.',
+            'type' => 'car',
+            'owner_id' => $owner->id,
+            'price' => 300.00, // 300 DH
+            'pricing_type' => 'daily',
+            'location' => 'Casablanca',
+            'status' => 'active',
+        ]);
+
+        Resource::create([
+            'title' => 'Luxury Suite - Ocean View',
+            'description' => 'Premium room with double beds, high speed wifi, and balcony.',
+            'type' => 'hotel',
+            'owner_id' => $owner->id,
+            'price' => 850.00, // 850 DH
+            'pricing_type' => 'nightly',
+            'location' => 'Marrakech',
+            'status' => 'active',
+        ]);
+
+        Resource::create([
+            'title' => 'Synthetic Turf Football Pitch',
+            'description' => 'Professional 5-a-side outdoor mini football pitch with stadium lighting.',
+            'type' => 'pitch',
+            'owner_id' => $owner->id,
+            'price' => 150.00, // 150 DH per hour
+            'pricing_type' => 'hourly',
+            'location' => 'Rabat',
+            'status' => 'active',
+        ]);
     }
-
-
-    Reservation::factory()->count(20)->create();
-}
-
-   
 }

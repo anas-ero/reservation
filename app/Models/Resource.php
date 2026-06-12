@@ -81,5 +81,9 @@ class Resource extends Model
     {
         return $this->hasMany(Rating::class);
     }
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 
 }

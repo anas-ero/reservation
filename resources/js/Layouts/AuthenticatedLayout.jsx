@@ -30,10 +30,20 @@ import {
     LogOut,
     ChevronUp,
 } from "lucide-react";
+import { Layers, ReceiptEuroIcon } from "lucide-react";
 import { ModeToggle } from "@/components/ui/mode-toggle";
+import { Settings } from "lucide-react";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
+    const isRouteActive = (pattern) => {
+        return route().current(pattern) || route().current(pattern + ".*");
+    };
+    const getLinkStyle = (pattern) => {
+        return isRouteActive(pattern)
+            ? "bg-sidebar-accent text-sidebar-accent-foreground"
+            : "hover:bg-gray-100 dark:hover:bg-gray-700/50";
+    };
 
     return (
         <SidebarProvider>
@@ -60,11 +70,16 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <SidebarMenuItem>
                                             <SidebarMenuButton
                                                 asChild
-                                                isActive={route().current(
+                                                isActive={isRouteActive(
                                                     "dashboard",
                                                 )}
                                             >
-                                                <Link href={route("dashboard")}>
+                                                <Link
+                                                    href={route("dashboard")}
+                                                    className={getLinkStyle(
+                                                        "dashboard",
+                                                    )}
+                                                >
                                                     <Calendar className="mr-2 h-4 w-4" />
                                                     <span>My Bookings</span>
                                                 </Link>
@@ -73,11 +88,16 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <SidebarMenuItem>
                                             <SidebarMenuButton
                                                 asChild
-                                                isActive={route().current(
+                                                isActive={isRouteActive(
                                                     "resources.*",
                                                 )}
                                             >
-                                                <Link href="/resources">
+                                                <Link
+                                                    href="/resources"
+                                                    className={getLinkStyle(
+                                                        "resources.*",
+                                                    )}
+                                                >
                                                     <MapPin className="mr-2 h-4 w-4" />
                                                     <span>Find a Place</span>
                                                 </Link>
@@ -92,12 +112,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <SidebarMenuItem>
                                             <SidebarMenuButton
                                                 asChild
-                                                isActive={route().current(
+                                                isActive={isRouteActive(
                                                     "owner.dashboard",
                                                 )}
                                             >
                                                 <Link
                                                     href={route(
+                                                        "owner.dashboard",
+                                                    )}
+                                                    className={getLinkStyle(
                                                         "owner.dashboard",
                                                     )}
                                                 >
@@ -109,13 +132,16 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <SidebarMenuItem>
                                             <SidebarMenuButton
                                                 asChild
-                                                isActive={route().current(
-                                                    "partner.resources",
+                                                isActive={isRouteActive(
+                                                    "partner.resources.*",
                                                 )}
                                             >
                                                 <Link
                                                     href={route(
                                                         "partner.resources.index",
+                                                    )}
+                                                    className={getLinkStyle(
+                                                        "partner.resources.*",
                                                     )}
                                                 >
                                                     <MapPin className="mr-2 h-4 w-4" />
@@ -132,12 +158,15 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <SidebarMenuItem>
                                             <SidebarMenuButton
                                                 asChild
-                                                isActive={route().current(
+                                                isActive={isRouteActive(
                                                     "admin.dashboard",
                                                 )}
                                             >
                                                 <Link
                                                     href={route(
+                                                        "admin.dashboard",
+                                                    )}
+                                                    className={getLinkStyle(
                                                         "admin.dashboard",
                                                     )}
                                                 >
@@ -149,13 +178,78 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <SidebarMenuItem>
                                             <SidebarMenuButton
                                                 asChild
-                                                isActive={route().current(
+                                                isActive={isRouteActive(
                                                     "admin.users",
                                                 )}
                                             >
-                                                <Link href="/admin/users">
+                                                <Link
+                                                    href="/admin/users"
+                                                    className={getLinkStyle(
+                                                        "admin.users",
+                                                    )}
+                                                >
                                                     <Users className="mr-2 h-4 w-4" />
                                                     <span>Manage Users</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        {/* Resource Moderator */}
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={isRouteActive(
+                                                    "admin.resources",
+                                                )}
+                                            >
+                                                <Link
+                                                    href="/admin/resources"
+                                                    className={getLinkStyle(
+                                                        "admin.resources",
+                                                    )}
+                                                >
+                                                    <Layers className="mr-2 h-4 w-4" />
+                                                    <span>
+                                                        Platform Listings
+                                                    </span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+
+                                        {/* NEW: Global Financial Transaction/Booking Ledger */}
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={isRouteActive(
+                                                    "admin.transactions",
+                                                )}
+                                            >
+                                                <Link
+                                                    href="/admin/transactions"
+                                                    className={getLinkStyle(
+                                                        "admin.transactions",
+                                                    )}
+                                                >
+                                                    <ReceiptEuroIcon className="mr-2 h-4 w-4" />
+                                                    <span>Global Bookings</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={isRouteActive(
+                                                    "admin.settings",
+                                                )}
+                                            >
+                                                <Link
+                                                    href="/admin/settings"
+                                                    className={getLinkStyle(
+                                                        "admin.settings",
+                                                    )}
+                                                >
+                                                    <Settings className="mr-2 h-4 w-4" />
+                                                    <span>System Settings</span>
                                                 </Link>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
