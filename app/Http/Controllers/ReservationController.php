@@ -20,6 +20,8 @@ class ReservationController extends Controller
             'guests' => ['required', 'integer', 'min:1'],
         ]);
 
+        
+
         // 🚨 Check overlap
         $conflict = Reservation::where('resource_id', $validated['resource_id'])
             ->whereBetween('start_time', [$validated['start_time'], $validated['end_time']])

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AdminTransactionController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', [HeroController::class, 'index'])->name('home');
 
@@ -30,9 +31,6 @@ Route::get('/dashboard', function (Request $request) {
     if ($request->user()->role === 'owner') {
         return redirect()->route('owner.dashboard');
     }
-
-    // Default for Customers
-    return Inertia::render('CustomerDashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // --- PROFILE ROUTES ---
@@ -76,7 +74,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     })->name('admin.settings');
 });
 
-// --- 3. PUBLIC APP ROUTES ---
+// --- 3. CUSTOMER DASHBOARD ROUTE ---
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+// --- 4. PUBLIC APP ROUTES ---
 Route::get('/resources', [ResourceController::class, 'index'])->name('public.resources.index');
 
 // Add this line for the new Public Show page!

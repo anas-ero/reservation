@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -16,16 +16,21 @@ class DashboardController extends Controller
         $upcomingBookings = Reservation::with('resource')
             ->where('user_id', $user->id)
             ->whereIn('status', ['pending', 'confirmed'])
+            ->orderBy('start_time')
             ->latest()
             ->get()
             ->map(function ($booking) {
                 return [
                     'id' => $booking->id,
+                    'reference' => '#BKG-'.str_pad($booking->id, 4, '0', STR_PAD_LEFT), // e.g., #BKG-0012
                     'title' => $booking->resource ? $booking->resource->title : 'Listing Name',
                     'type' => $booking->resource ? $booking->resource->type : 'N/A',
-                    'price' => number_format($booking->total_price ?? ($booking->resource ? $booking->resource->price : 0), 2) . ' DH',
+                    'price' => number_format($booking->resource ? $booking->resource->price : 0, 2),
                     'status' => $booking->status,
-                    'date' => $booking->start_time->format('M d') . ' - ' . $booking->end_time->format('M d, Y'),
+                    'date' => Carbon::parse($booking->created_at)->format('M d, Y'),
+                    'start_date' => Carbon::parse($booking->start_time)->format('M d, Y'),
+                    'end_date' => Carbon::parse($booking->end_time)->format('M d, Y'),
+                    'total_price' => number_format($booking->total_price, 2),
                 ];
             });
 
@@ -33,17 +38,22 @@ class DashboardController extends Controller
         $pastBookings = Reservation::with('resource')
             ->where('user_id', $user->id)
             ->whereIn('status', ['cancelled', 'completed'])
+            ->orderBy('start_time')
             ->latest()
             ->take(5)
             ->get()
             ->map(function ($booking) {
                 return [
                     'id' => $booking->id,
+                    'reference' => '#BKG-'.str_pad($booking->id, 4, '0', STR_PAD_LEFT), // e.g., #BKG-0012
                     'title' => $booking->resource ? $booking->resource->title : 'Listing Name',
                     'type' => $booking->resource ? $booking->resource->type : 'N/A',
-                    'price' => number_format($booking->total_price ?? ($booking->resource ? $booking->resource->price : 0), 2) . ' DH',
+                    'price' => number_format($booking->resource ? $booking->resource->price : 0, 2),
                     'status' => $booking->status,
-                    'date' => $booking->start_time->format('M d') . ' - ' . $booking->end_time->format('M d, Y'),
+                    'date' => Carbon::parse($booking->created_at)->format('M d, Y'),
+                    'start_date' => Carbon::parse($booking->start_time)->format('M d, Y'),
+                    'end_date' => Carbon::parse($booking->end_time)->format('M d, Y'),
+                    'total_price' => number_format($booking->total_price, 2),
                 ];
             });
 
@@ -52,7 +62,7 @@ class DashboardController extends Controller
             'active_count' => $upcomingBookings->count(),
             'total_spent' => number_format(Reservation::where('user_id', $user->id)
                 ->where('status', 'confirmed')
-                ->sum('total_price'), 2) . ' DH'
+                ->sum('total_price'), 2).' DH',
         ];
 
         return Inertia::render('CustomerDashboard', [

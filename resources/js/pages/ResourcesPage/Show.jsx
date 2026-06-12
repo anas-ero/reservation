@@ -2,15 +2,12 @@ import {
     Drawer,
     DrawerClose,
     DrawerContent,
-    DrawerDescription,
     DrawerFooter,
     DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useState, useEffect } from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import ResourceReviews from "@/components/Resource/ResourceReviews";
 import {
     Star,
@@ -26,7 +23,6 @@ import {
     ChevronRight,
     Eye,
     Users,
-    Maximize2,
     CalendarDays,
     X,
     Check,
@@ -44,6 +40,11 @@ import {
     Bath,
     Waves,
     Bed,
+    Map,
+    Activity,
+    Fuel,
+    Navigation,
+    Gauge, // Added for dynamic specs
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -91,25 +92,48 @@ const TYPE_META = {
     },
 };
 
+// POLYMORPHIC FEATURES: Swaps automatically based on item.type
+const RESOURCE_FEATURES = {
+    hotel: [
+        { icon: Wifi, label: "High-speed Wi-Fi", available: true },
+        { icon: ParkingCircle, label: "Free parking", available: true },
+        { icon: Wind, label: "Air conditioning", available: true },
+        { icon: Waves, label: "Infinity pool", available: true },
+        { icon: Coffee, label: "Espresso machine", available: true },
+        { icon: Tv, label: "Smart TV (4K)", available: true },
+        { icon: Utensils, label: "Fully-equipped kitchen", available: true },
+        { icon: Bath, label: "Rain shower + bathtub", available: true },
+        { icon: Flame, label: "Fireplace", available: false },
+        { icon: Zap, label: "EV charger", available: false },
+    ],
+    car: [
+        { icon: Wind, label: "Air conditioning", available: true },
+        { icon: Navigation, label: "GPS Navigation", available: true },
+        { icon: Wifi, label: "Bluetooth Audio", available: true },
+        {
+            icon: ShieldCheck,
+            label: "Comprehensive Insurance",
+            available: true,
+        },
+        { icon: Gauge, label: "Unlimited Mileage", available: true },
+        { icon: Users, label: "Child Seat Available", available: false },
+    ],
+    pitch: [
+        { icon: Dumbbell, label: "Bibs & Balls Included", available: true },
+        { icon: Zap, label: "Stadium Floodlights", available: true },
+        { icon: Activity, label: "Locker Rooms", available: true },
+        { icon: Bath, label: "Hot Showers", available: true },
+        { icon: ParkingCircle, label: "Free Parking", available: true },
+        { icon: Tv, label: "Scoreboard", available: false },
+    ],
+};
+
 const PLACEHOLDER_GRADIENTS = [
     "from-zinc-200 to-zinc-300",
     "from-slate-200 to-zinc-200",
     "from-zinc-300 to-slate-300",
     "from-stone-200 to-zinc-200",
     "from-zinc-200 to-stone-300",
-];
-
-const AMENITIES = [
-    { icon: Wifi, label: "High-speed Wi-Fi", available: true },
-    { icon: ParkingCircle, label: "Free parking", available: true },
-    { icon: Wind, label: "Air conditioning", available: true },
-    { icon: Waves, label: "Infinity pool", available: true },
-    { icon: Coffee, label: "Espresso machine", available: true },
-    { icon: Tv, label: "Smart TV (4K)", available: true },
-    { icon: Utensils, label: "Fully-equipped kitchen", available: true },
-    { icon: Bath, label: "Rain shower + bathtub", available: true },
-    { icon: Flame, label: "Fireplace", available: false },
-    { icon: Zap, label: "EV charger", available: false },
 ];
 
 const REVIEWS_BREAKDOWN = [
@@ -240,7 +264,6 @@ function GalleryImage({ src, alt, className, gradient }) {
 // ─── Bento Gallery ──────────────────────────────────────────────────────────────
 
 function BentoGallery({ images, name, onShowAll }) {
-    // Pad to 5 slots; use your original /storage/ path prefix
     const slots = Array.from({ length: 5 }).map((_, i) =>
         images[i]?.path ? `/storage/${images[i].path}` : null,
     );
@@ -248,7 +271,6 @@ function BentoGallery({ images, name, onShowAll }) {
     return (
         <div className="relative rounded-2xl overflow-hidden h-[420px] md:h-[500px] mb-10">
             <div className="grid grid-cols-2 gap-1.5 h-full">
-                {/* Hero — left half */}
                 <div
                     className="group relative cursor-pointer"
                     onClick={onShowAll}
@@ -260,8 +282,6 @@ function BentoGallery({ images, name, onShowAll }) {
                         gradient={PLACEHOLDER_GRADIENTS[0]}
                     />
                 </div>
-
-                {/* 2×2 right grid */}
                 <div className="grid grid-cols-2 grid-rows-2 gap-1.5">
                     {[1, 2, 3, 4].map((idx) => (
                         <div
@@ -279,8 +299,6 @@ function BentoGallery({ images, name, onShowAll }) {
                     ))}
                 </div>
             </div>
-
-            {/* "Show all" overlay button */}
             <Button
                 variant="secondary"
                 onClick={onShowAll}
@@ -289,8 +307,6 @@ function BentoGallery({ images, name, onShowAll }) {
                 <Grid3X3 className="w-4 h-4 text-zinc-500" />
                 Show all photos
             </Button>
-
-            {/* Inset ring polish */}
             <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-zinc-900/5 pointer-events-none" />
         </div>
     );
@@ -360,11 +376,7 @@ function Lightbox({ images, onClose }) {
                         <button
                             key={i}
                             onClick={() => setCurrent(i)}
-                            className={`w-12 h-8 rounded-md overflow-hidden ring-2 transition-all duration-200 ${
-                                i === current
-                                    ? "ring-white scale-110"
-                                    : "ring-zinc-600 opacity-50 hover:opacity-80"
-                            }`}
+                            className={`w-12 h-8 rounded-md overflow-hidden ring-2 transition-all duration-200 ${i === current ? "ring-white scale-110" : "ring-zinc-600 opacity-50 hover:opacity-80"}`}
                         >
                             <img
                                 src={src}
@@ -378,6 +390,70 @@ function Lightbox({ images, onClose }) {
         </div>
     );
 }
+
+// ─── Polymorphic Specs Component ───────────────────────────────────────────────
+
+const ResourceSpecs = ({ item }) => {
+    switch (item.type) {
+        case "car":
+            return (
+                <>
+                    <span className="flex items-center gap-1">
+                        <Users className="w-3.5 h-3.5" /> {item.seats || 5}{" "}
+                        Seats
+                    </span>
+                    <span>·</span>
+                    <span className="flex items-center gap-1">
+                        <CarIcon className="w-3.5 h-3.5" />{" "}
+                        {item.transmission || "Automatic"}
+                    </span>
+                    <span>·</span>
+                    <span className="flex items-center gap-1">
+                        <Fuel className="w-3.5 h-3.5" />{" "}
+                        {item.fuel_type || "Diesel"}
+                    </span>
+                </>
+            );
+        case "pitch":
+        case "sports_pitch":
+            return (
+                <>
+                    <span className="flex items-center gap-1">
+                        <Users className="w-3.5 h-3.5" />{" "}
+                        {item.capacity || "5 vs 5"}
+                    </span>
+                    <span>·</span>
+                    <span className="flex items-center gap-1">
+                        <Map className="w-3.5 h-3.5" />{" "}
+                        {item.surface || "Synthetic Turf"}
+                    </span>
+                    <span>·</span>
+                    <span className="flex items-center gap-1">
+                        <Activity className="w-3.5 h-3.5" /> Outdoor
+                    </span>
+                </>
+            );
+        default: // Hotel, Villa, Workspace
+            return (
+                <>
+                    <span className="flex items-center gap-1">
+                        <Users className="w-3.5 h-3.5" /> Up to{" "}
+                        {item.max_guests || 2} guests
+                    </span>
+                    <span>·</span>
+                    <span className="flex items-center gap-1">
+                        <Bed className="w-3.5 h-3.5" /> {item.bedrooms || 1}{" "}
+                        bedrooms
+                    </span>
+                    <span>·</span>
+                    <span className="flex items-center gap-1">
+                        <Bath className="w-3.5 h-3.5" /> {item.bathrooms || 1}{" "}
+                        bathrooms
+                    </span>
+                </>
+            );
+    }
+};
 
 // ─── Main Component ─────────────────────────────────────────────────────────────
 
@@ -405,23 +481,27 @@ export default function Show({ auth, resource, ratings }) {
         });
     };
 
-    const calculateNights = (start, end) => {
+    const calculateDuration = (start, end) => {
         if (!start || !end) return 0;
-
         const startDate = new Date(`${start}T00:00:00`);
         const endDate = new Date(`${end}T00:00:00`);
         const diffMs = endDate.getTime() - startDate.getTime();
-
         if (diffMs <= 0) return 0;
-
         return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
     };
 
-    // ── Safe defaults (mirrors your original pattern) ──
+    // ── Safe defaults ──
     const item = resource || {};
     const images = item.images || [];
     const typeMeta = TYPE_META[item.type] || TYPE_META.villa;
     const TypeIcon = typeMeta.icon;
+
+    // Load correct feature array based on listing type
+    const applicableFeatures =
+        RESOURCE_FEATURES[item.type] || RESOURCE_FEATURES.hotel;
+
+    // Dynamic Pricing Unit (e.g. night, day, hour)
+    const pricingUnit = item.pricing_type || "night";
 
     const price = item.price || 0;
     const today = new Date();
@@ -429,19 +509,17 @@ export default function Show({ auth, resource, ratings }) {
     defaultCheckInDate.setDate(defaultCheckInDate.getDate() + 1);
     const defaultCheckOutDate = new Date(defaultCheckInDate);
     defaultCheckOutDate.setDate(defaultCheckOutDate.getDate() + 1);
-    // calculate nights, service fee, and total based on defaults for the reservation form
-    const { data, setData, post, processing, errors } = useForm({
+
+    const { data, setData, post, processing, errors, transform } = useForm({
         resource_id: item.id || "",
         start_time: formatDateInput(defaultCheckInDate),
         end_time: formatDateInput(defaultCheckOutDate),
-
         guests: 2,
     });
-    
-    
-    const nights = calculateNights(formatDateInput(defaultCheckInDate), formatDateInput(defaultCheckOutDate));
+
+    const nights = calculateNights(data.start_time, data.end_time);
     const serviceFee = Math.round(price * nights * 0.12);
-    const total = price * nights + serviceFee;
+    const total = (price * nights) + serviceFee;
 
     // ── State ──
     const [saved, setSaved] = useState(false);
@@ -451,14 +529,18 @@ export default function Show({ auth, resource, ratings }) {
     const [bookingSheetOpen, setBookingSheetOpen] = useState(false);
 
     const visibleAmenities = showAllAmenities
-        ? AMENITIES
-        : AMENITIES.slice(0, 6);
+        ? applicableFeatures
+        : applicableFeatures.slice(0, 6);
 
     const reserve = () => {
         if (!auth?.user) {
             window.location.href = route("login");
             return;
         }
+        transform((currentData) => ({
+            ...currentData,
+            total_price: total, // IMPORTANT: Change 'total_price' to whatever your column name is in your database (e.g., 'price', 'amount', or 'total_price')
+        }));
 
         post("/reservations", {
             preserveScroll: true,
@@ -477,7 +559,6 @@ export default function Show({ auth, resource, ratings }) {
                         formErrors.start_time ||
                         formErrors.end_time ||
                         formErrors.guests ||
-
                         "This reservation could not be completed.",
                 });
                 setBookingSheetOpen(true);
@@ -503,7 +584,7 @@ export default function Show({ auth, resource, ratings }) {
                                 </h3>
                                 <p className="mt-2 max-w-2xl text-base">
                                     {bookingStatus?.type === "success"
-                                        ? "Your booking request was saved. Review the stay details below before moving on."
+                                        ? "Your booking request was saved. Review the details below before moving on."
                                         : bookingStatus?.message ||
                                           "Another guest already booked these dates. Pick a different range to continue."}
                                 </p>
@@ -548,7 +629,7 @@ export default function Show({ auth, resource, ratings }) {
                                         </div>
                                         <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
                                             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-                                                Guests
+                                                Guests/Items
                                             </p>
                                             <p className="mt-3 text-xl font-bold text-foreground">
                                                 {data.guests}
@@ -565,12 +646,12 @@ export default function Show({ auth, resource, ratings }) {
                                         <div className="flex items-center justify-between">
                                             <span>
                                                 MAD {price.toLocaleString()} ×{" "}
-                                                {nights} nights
+                                                {durationUnits} {pricingUnit}s
                                             </span>
                                             <span className="font-semibold text-foreground">
                                                 MAD{" "}
                                                 {(
-                                                    price * nights
+                                                    price * durationUnits
                                                 ).toLocaleString()}
                                             </span>
                                         </div>
@@ -591,11 +672,7 @@ export default function Show({ auth, resource, ratings }) {
                                     </div>
 
                                     <div
-                                        className={`mt-6 rounded-2xl border px-4 py-4 text-sm ${
-                                            bookingStatus?.type === "success"
-                                                ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                                                : "border-red-200 bg-red-50 text-red-700"
-                                        }`}
+                                        className={`mt-6 rounded-2xl border px-4 py-4 text-sm ${bookingStatus?.type === "success" ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-red-200 bg-red-50 text-red-700"}`}
                                     >
                                         <p className="font-semibold">
                                             {bookingStatus?.type === "success"
@@ -653,7 +730,6 @@ export default function Show({ auth, resource, ratings }) {
                 </DrawerContent>
             </Drawer>
 
-            {/* Lightbox */}
             {lightboxOpen && images.length > 0 && (
                 <Lightbox
                     images={images}
@@ -665,26 +741,22 @@ export default function Show({ auth, resource, ratings }) {
                 {/* ── 1. Header ── */}
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
                     <div className="space-y-2">
-                        {/* Type badge + Guest Favourite */}
                         <div className="flex flex-wrap items-center gap-2">
                             <span
                                 className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${typeMeta.color}`}
                             >
-                                <TypeIcon className="w-3 h-3" />
+                                <TypeIcon className="w-3 h-3" />{" "}
                                 {typeMeta.label}
                             </span>
                             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                                <Award className="w-3 h-3" />
-                                Guest Favourite
+                                <Award className="w-3 h-3" /> Guest Favourite
                             </span>
                         </div>
 
-                        {/* Title */}
                         <h1 className="text-3xl font-bold text-zinc-950 tracking-tight leading-tight">
                             {item.name || item.title || "Unnamed Listing"}
                         </h1>
 
-                        {/* Meta row */}
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-zinc-600 font-medium">
                             <span className="flex items-center gap-1.5">
                                 <StarRow score={4.9} />
@@ -700,10 +772,8 @@ export default function Show({ auth, resource, ratings }) {
                                 <>
                                     <span className="text-zinc-300">·</span>
                                     <span className="flex items-center gap-1 text-zinc-500">
-                                        <Eye className="w-3.5 h-3.5" />
-                                        {(
-                                            item.views || 0
-                                        ).toLocaleString()}{" "}
+                                        <Eye className="w-3.5 h-3.5" />{" "}
+                                        {(item.views || 0).toLocaleString()}{" "}
                                         views
                                     </span>
                                 </>
@@ -712,7 +782,7 @@ export default function Show({ auth, resource, ratings }) {
                                 <>
                                     <span className="text-zinc-300">·</span>
                                     <span className="flex items-center gap-1">
-                                        <MapPin className="w-3.5 h-3.5 text-zinc-400" />
+                                        <MapPin className="w-3.5 h-3.5 text-zinc-400" />{" "}
                                         {item.location}
                                     </span>
                                 </>
@@ -720,7 +790,6 @@ export default function Show({ auth, resource, ratings }) {
                         </div>
                     </div>
 
-                    {/* Share / Save — uses your original Shadcn Button variant="outline" */}
                     <div className="flex items-center gap-2 flex-shrink-0">
                         <Button
                             variant="outline"
@@ -733,11 +802,7 @@ export default function Show({ auth, resource, ratings }) {
                             variant="outline"
                             size="sm"
                             onClick={() => setSaved((s) => !s)}
-                            className={`gap-2 rounded-xl transition-all duration-200 ${
-                                saved
-                                    ? "border-rose-300 text-rose-600 bg-rose-50 hover:bg-rose-100"
-                                    : "border-zinc-200 hover:border-zinc-400"
-                            }`}
+                            className={`gap-2 rounded-xl transition-all duration-200 ${saved ? "border-rose-300 text-rose-600 bg-rose-50 hover:bg-rose-100" : "border-zinc-200 hover:border-zinc-400"}`}
                         >
                             <Heart
                                 className={`w-4 h-4 transition-all duration-200 ${saved ? "fill-rose-500 text-rose-500 scale-110" : ""}`}
@@ -750,13 +815,13 @@ export default function Show({ auth, resource, ratings }) {
                 {/* ── 2. Bento Gallery ── */}
                 <BentoGallery
                     images={images}
-                    name={item.name || "Listing"}
+                    name={item.name || item.title || "Listing"}
                     onShowAll={() => setLightboxOpen(true)}
                 />
 
-                {/* ── 3. Main content split: lg:col-span-2 + col-span-1 ── */}
+                {/* ── 3. Main content split ── */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                    {/* ── LEFT: Details ── */}
+                    {/* LEFT: Details */}
                     <div className="lg:col-span-2 space-y-8">
                         {/* Host Info */}
                         <div className="flex items-center justify-between pb-6 border-b border-zinc-200">
@@ -766,20 +831,8 @@ export default function Show({ auth, resource, ratings }) {
                                     {item.owner?.name || "Verified Partner"}
                                 </h2>
                                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-zinc-500 mt-1.5">
-                                    <span className="flex items-center gap-1">
-                                        <Users className="w-3.5 h-3.5" /> Up to{" "}
-                                        {item.max_guests} guests
-                                    </span>
-                                    <span>·</span>
-                                    <span className="flex items-center gap-1">
-                                        <Bed className="w-3.5 h-3.5" />{" "}
-                                        {item.bedrooms} bedrooms
-                                    </span>
-                                    <span>·</span>
-                                    <span className="flex items-center gap-1">
-                                        <Bath className="w-3.5 h-3.5" />{" "}
-                                        {item.bathrooms} bathrooms
-                                    </span>
+                                    {/* POLYMORPHIC SPECS INJECTED HERE */}
+                                    <ResourceSpecs item={item} />
                                 </div>
                                 <p className="text-zinc-500 text-sm mt-1">
                                     Superhost · Fast responder
@@ -787,7 +840,9 @@ export default function Show({ auth, resource, ratings }) {
                             </div>
                             <div className="relative flex-shrink-0">
                                 <div className="h-14 w-14 rounded-full bg-zinc-950 text-white flex items-center justify-center text-xl font-bold shadow-md">
-                                    P
+                                    {item.owner?.name
+                                        ? item.owner.name.charAt(0)
+                                        : "P"}
                                 </div>
                                 <div className="absolute -bottom-0.5 -right-0.5 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
                                     <Check
@@ -850,18 +905,14 @@ export default function Show({ auth, resource, ratings }) {
                         {/* Amenities */}
                         <div>
                             <h3 className="text-lg font-bold text-zinc-950 mb-4">
-                                What this place offers
+                                Features & Amenities
                             </h3>
                             <div className="grid grid-cols-2 gap-3 text-zinc-700">
                                 {visibleAmenities.map(
                                     ({ icon: Icon, label, available }) => (
                                         <div
                                             key={label}
-                                            className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${
-                                                available
-                                                    ? "hover:bg-zinc-50"
-                                                    : "text-zinc-300"
-                                            }`}
+                                            className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${available ? "hover:bg-zinc-50" : "text-zinc-300"}`}
                                         >
                                             <div
                                                 className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${available ? "bg-zinc-100" : "bg-zinc-50"}`}
@@ -886,7 +937,7 @@ export default function Show({ auth, resource, ratings }) {
                             >
                                 {showAllAmenities
                                     ? "Show fewer amenities"
-                                    : `Show all ${AMENITIES.length} amenities`}
+                                    : `Show all ${applicableFeatures.length} amenities`}
                             </Button>
                         </div>
 
@@ -906,14 +957,15 @@ export default function Show({ auth, resource, ratings }) {
                                             <span className="text-2xl font-bold text-zinc-950">
                                                 MAD {price.toLocaleString()}
                                             </span>
-                                            <span className="text-zinc-500 text-sm font-normal mb-1">
-                                                / night
+                                            <span className="text-zinc-500 text-sm font-normal mb-1 capitalize">
+                                                / {pricingUnit}
                                             </span>
                                         </div>
                                         <div className="flex items-center gap-1 text-sm">
                                             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                                             <span className="font-semibold text-zinc-800">
-                                                {item.rating?.toFixed(1)}
+                                                {item.rating?.toFixed(1) ||
+                                                    "4.9"}
                                             </span>
                                             <span className="text-zinc-400 text-xs ml-0.5">
                                                 · 124
@@ -923,7 +975,6 @@ export default function Show({ auth, resource, ratings }) {
                                 </CardHeader>
 
                                 <CardContent className="space-y-4">
-                                    {/* Date picker — styled up from your original grid */}
                                     <div className="grid grid-cols-2 border-2 border-zinc-200 rounded-xl overflow-hidden focus-within:border-zinc-900 transition-colors duration-200">
                                         <div className="p-3 border-r border-zinc-200 hover:bg-zinc-50 transition-colors">
                                             <span className="block text-[10px] font-bold uppercase tracking-widest text-zinc-500 mb-1">
@@ -972,15 +1023,17 @@ export default function Show({ auth, resource, ratings }) {
                                         </div>
                                     </div>
 
-                                    {/* Guests stepper */}
                                     <div className="border-2 border-zinc-200 rounded-xl px-3 py-2.5 flex items-center justify-between hover:border-zinc-400 transition-colors">
                                         <div>
                                             <div className="text-[10px] font-bold tracking-widest uppercase text-zinc-500 mb-0.5">
-                                                Guests
+                                                {item.type === "car"
+                                                    ? "Vehicles"
+                                                    : item.type === "pitch"
+                                                      ? "Players"
+                                                      : "Guests"}
                                             </div>
                                             <div className="text-sm font-semibold text-zinc-900">
-                                                {data.guests} guest
-                                                {data.guests !== 1 ? "s" : ""}
+                                                {data.guests} Selected
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-2">
@@ -1025,10 +1078,11 @@ export default function Show({ auth, resource, ratings }) {
                                         </div>
                                     </div>
 
-                                    {/* Reserve CTA */}
                                     <Button
                                         onClick={reserve}
-                                        disabled={processing || nights < 1}
+                                        disabled={
+                                            processing || durationUnits < 1
+                                        }
                                         className="w-full text-lg font-bold py-6 bg-zinc-950 hover:bg-zinc-800 active:bg-black text-white rounded-xl shadow-lg shadow-zinc-900/20 hover:shadow-xl hover:shadow-zinc-900/30 transition-all duration-200 flex items-center justify-center gap-2 group"
                                     >
                                         {processing
@@ -1041,17 +1095,16 @@ export default function Show({ auth, resource, ratings }) {
                                         You won't be charged yet
                                     </div>
 
-                                    {/* Price breakdown */}
                                     <div className="space-y-2.5 pt-1">
                                         <div className="flex justify-between text-sm text-zinc-600">
                                             <button className="underline underline-offset-2 hover:text-zinc-900 transition-colors text-left">
                                                 MAD {price.toLocaleString()} ×{" "}
-                                                {nights} nights
+                                                {durationUnits} {pricingUnit}s
                                             </button>
                                             <span>
                                                 MAD{" "}
                                                 {(
-                                                    price * nights
+                                                    price * durationUnits
                                                 ).toLocaleString()}
                                             </span>
                                         </div>
@@ -1075,9 +1128,8 @@ export default function Show({ auth, resource, ratings }) {
                                 </CardFooter>
                             </Card>
 
-                            {/* Trust badge */}
                             <div className="flex items-center justify-center gap-2 mt-6 text-sm text-zinc-500 font-medium">
-                                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                                <ShieldCheck className="w-4 h-4 text-emerald-600" />{" "}
                                 Secure &amp; protected booking
                             </div>
                             <p className="text-center mt-2">
@@ -1090,14 +1142,14 @@ export default function Show({ auth, resource, ratings }) {
                 </div>
             </main>
 
-            {/* ── Mobile sticky booking bar (your original had no mobile widget) ── */}
+            {/* ── Mobile sticky booking bar ── */}
             <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-card/95 backdrop-blur-md border-t border-border px-4 py-3 shadow-[0_-4px_24px_rgba(0,0,0,0.08)]">
                 <div className="flex items-center justify-between gap-4 max-w-lg mx-auto">
                     <div>
                         <div className="text-lg font-bold text-zinc-900">
                             MAD {price.toLocaleString()}
-                            <span className="text-sm font-normal text-zinc-500 ml-1">
-                                / night
+                            <span className="text-sm font-normal text-zinc-500 ml-1 capitalize">
+                                / {pricingUnit}
                             </span>
                         </div>
                         <div className="flex items-center gap-1 mt-0.5">
@@ -1112,7 +1164,7 @@ export default function Show({ auth, resource, ratings }) {
                     </div>
                     <Button
                         onClick={reserve}
-                        disabled={processing || nights < 1}
+                        disabled={processing || durationUnits < 1}
                         className="flex-1 max-w-[160px] py-3 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-white font-semibold text-sm shadow-lg shadow-zinc-900/20 flex items-center justify-center gap-2 group"
                     >
                         {processing ? "Reserving..." : "Reserve"}
