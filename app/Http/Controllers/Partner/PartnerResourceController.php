@@ -109,6 +109,8 @@ class PartnerResourceController extends Controller
             'rooms.*.beds' => ['required_with:rooms', 'array', 'min:1'],
             'rooms.*.beds.*.count' => ['required_with:rooms', 'integer', 'min:1', 'max:20'],
             'rooms.*.beds.*.type' => ['required_with:rooms', 'string', 'max:50'],
+            'images' => ['sometimes', 'array'],
+            'images.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 
@@ -187,11 +189,24 @@ class PartnerResourceController extends Controller
         }
     }
 
+    private function handleImageUploads(Resource $resource, Request $request): void
+    {
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $path = $image->store('resources', 'public');
+                $resource->images()->create([
+                    'path' => $path,
+                    'is_primary' => $index === 0 && $resource->images()->count() === 0,
+                ]);
+            }
+        }
+    }
+
     // 1. Show all listings owned by this specific partner
     public function index(Request $request)
     {
         // Only fetch resources that belong to the logged-in owner
-        $resources = $request->user()->resources()->latest()->get();
+        $resources = $request->user()->resources()->with('images')->latest()->get();
 
         return Inertia::render('Partner/Resources/Index', [
             'resources' => $resources,
@@ -241,6 +256,7 @@ class PartnerResourceController extends Controller
                 'location' => $validated['location'],
             ]);
             $this->saveResourceRelations($resource, $validated, false);
+            $this->handleImageUploads($resource, $request);
         });
 
         return redirect()
@@ -250,7 +266,7 @@ class PartnerResourceController extends Controller
 
     public function show(Request $request, $id)
     {
-        $resource = Resource::findOrFail($id);
+        $resource = Resource::with('images')->findOrFail($id);
 
         if ($resource->user_id != null && $resource->user_id != $request->user()->id) {
             abort(403, 'Unauthorized access to this resource.');
@@ -258,26 +274,36 @@ class PartnerResourceController extends Controller
 
         // 🔥 USE THE REAL DATABASE VIEWS HERE:
         $analytics = [
-            'total_views' => $resource->views, 
+            'total_views' => $resource->views ?? 0, 
             'this_week_views' => 0, // We will build a complex timeline for this later
             'conversion_rate' => '0%', 
         ];
 
-        $mockBookings = [
-            ['id' => 1, 'customer' => 'Youssef Alaoui', 'date' => '2026-05-20', 'status' => 'confirmed', 'amount' => $resource->price * 2],
-            ['id' => 2, 'customer' => 'Fatima Zahra', 'date' => '2026-05-25', 'status' => 'pending', 'amount' => $resource->price],
-        ];
+        $bookings = $resource->reservations()->with('user')->latest()->take(10)->get()->map(function ($booking) {
+            return [
+                'id' => $booking->id,
+                'customer' => $booking->user->name ?? 'Unknown Customer',
+                'date' => \Carbon\Carbon::parse($booking->start_time)->format('Y-m-d'),
+                'status' => $booking->status,
+                'amount' => $booking->total_price ?? 0,
+            ];
+        });
 
-        $mockReviews = [
-            ['id' => 1, 'author' => 'Karim B.', 'rating' => 5, 'comment' => 'Absolutely amazing experience, highly recommend!', 'date' => '2 days ago'],
-            ['id' => 2, 'author' => 'Sarah M.', 'rating' => 4, 'comment' => 'Great place, but finding parking was a bit tricky.', 'date' => '1 week ago'],
-        ];
+        $reviews = $resource->ratings()->with('user')->latest()->take(10)->get()->map(function ($rating) {
+            return [
+                'id' => $rating->id,
+                'author' => $rating->user->name ?? 'Anonymous',
+                'rating' => $rating->rating,
+                'comment' => $rating->comment,
+                'date' => $rating->created_at->diffForHumans(),
+            ];
+        });
 
         return Inertia::render('Partner/Resources/Show', [
             'resource' => $resource,
             'analytics' => $analytics,
-            'bookings' => $mockBookings,
-            'reviews' => $mockReviews,
+            'bookings' => $bookings,
+            'reviews' => $reviews,
         ]);
     }
 
@@ -289,6 +315,7 @@ class PartnerResourceController extends Controller
             abort(403, 'Unauthorized access to this resource.');
         }
 
+        $resource->load('images');
         return Inertia::render('Partner/Resources/Edit', [
             'resource' => $resource,
         ]);
@@ -372,6 +399,7 @@ class PartnerResourceController extends Controller
             }
 
             $this->saveResourceRelations($resource, $validated, true);
+            $this->handleImageUploads($resource, $request);
         });
 
         return redirect()->route('partner.resources.index')->with('success', 'Listing updated successfully.');

@@ -1,6 +1,5 @@
 import { Link } from "@inertiajs/react";
 import { Search } from "lucide-react";
-import { ModeToggle } from "@/components/ui/mode-toggle";
 
 export default function MainLayout({ children, auth }) {
     return (
@@ -29,16 +28,9 @@ export default function MainLayout({ children, auth }) {
                         >
                             Browse
                         </Link>
-                        <Link
-                            href="/reservations"
-                            className="text-sm font-medium text-zinc-600 hover:text-zinc-950 transition-colors"
-                        >
-                            My Reservations
-                        </Link>
                     </nav>
 
                     <div className="flex items-center gap-4">
-                        <ModeToggle />
                         {auth?.user ? (
                             <Link
                                 href="/dashboard"
@@ -90,7 +82,8 @@ export default function MainLayout({ children, auth }) {
                             </div>
                             <p className="text-sm text-zinc-500 max-w-xs">
                                 The modern platform to reserve your workspaces,
-                                meeting rooms, and shared offices in just a few clicks.
+                                meeting rooms, and shared offices in just a few
+                                clicks.
                             </p>
                         </div>
                         <div>

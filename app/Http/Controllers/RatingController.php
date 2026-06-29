@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Resource;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -32,6 +33,17 @@ class RatingController extends Controller
         ]);
 
         return back()->with('success', 'Your rating has been submitted successfully.');
+    }
+
+    public function destroy(Rating $rating)
+    {
+        if ($rating->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $rating->delete();
+
+        return back()->with('success', 'Your review has been deleted.');
     }
 
 }

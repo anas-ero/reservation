@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
         $user = $request->user();
 
         if ($user->role === 'admin') {
-            return redirect()->intended(route('admin.dashboard'));
+            return redirect()->route('admin.dashboard');
         } if ($user->role === 'owner') {
             // Check if they are approved by the admin yet
             if (! $user->is_verified) {
@@ -45,7 +45,7 @@ class AuthenticatedSessionController extends Controller
             }
 
             // Approved? Send them to the real dashboard.
-            return redirect()->intended(route('owner.dashboard'));
+            return redirect()->route('owner.dashboard');
         }
 
         return redirect()->intended(route('dashboard'));

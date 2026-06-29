@@ -116,7 +116,12 @@ export default function CreateListing({ auth }) {
         check_in_until: "18:00",
         check_out_from: "08:00",
         check_out_until: "11:00",
+        images: [],
     });
+
+    const handleImageChange = (e) => {
+        setData("images", Array.from(e.target.files));
+    };
 
     const selectedType = LISTING_TYPES.find((item) => item.value === data.type);
 
@@ -556,6 +561,21 @@ export default function CreateListing({ auth }) {
 
                                 {step === 3 && (
                                     <section className="space-y-8">
+                                        <div className="rounded-2xl border border-zinc-200 bg-white p-5 space-y-4">
+                                            <label className="block text-sm font-medium text-zinc-700">Photos</label>
+                                            <input 
+                                                type="file" 
+                                                multiple 
+                                                accept="image/*" 
+                                                onChange={handleImageChange}
+                                                className="w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-zinc-50 file:text-zinc-700 hover:file:bg-zinc-100" 
+                                            />
+                                            {data.images && data.images.length > 0 && (
+                                                <p className="text-xs text-zinc-500">{data.images.length} files selected</p>
+                                            )}
+                                            {errors.images && <p className="text-sm text-red-600 mt-1">{errors.images}</p>}
+                                        </div>
+
                                         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                                             <div>
                                                 <label className="block text-sm font-medium text-zinc-700 mb-2">

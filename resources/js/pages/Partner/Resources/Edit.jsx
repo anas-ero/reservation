@@ -20,7 +20,12 @@ export default function EditResource({ auth, resource }) {
         exclude_infants: Boolean(resource?.exclude_infants),
         allows_children: Boolean(resource?.allows_children),
         description: resource?.description ?? '',
+        images: [],
     });
+
+    const handleImageChange = (e) => {
+        setData("images", Array.from(e.target.files));
+    };
 
     const submit = (e) => {
         e.preventDefault();
@@ -175,6 +180,37 @@ export default function EditResource({ auth, resource }) {
                                     className="w-full rounded-xl border-zinc-300 focus:border-zinc-950 focus:ring-zinc-950"
                                 />
                                 {errors.description && <p className="text-sm text-red-600 mt-1">{errors.description}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-zinc-700 mb-1">Upload New Photos</label>
+                                <input 
+                                    type="file" 
+                                    multiple 
+                                    accept="image/*" 
+                                    onChange={handleImageChange}
+                                    className="w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-zinc-50 file:text-zinc-700 hover:file:bg-zinc-100" 
+                                />
+                                {data.images && data.images.length > 0 && (
+                                    <p className="text-xs text-zinc-500 mt-2">{data.images.length} files selected</p>
+                                )}
+                                {errors.images && <p className="text-sm text-red-600 mt-1">{errors.images}</p>}
+                                
+                                {resource.images && resource.images.length > 0 && (
+                                    <div className="mt-4">
+                                        <p className="text-sm font-medium text-zinc-700 mb-2">Current Photos</p>
+                                        <div className="flex gap-2 overflow-x-auto pb-2">
+                                            {resource.images.map((img) => (
+                                                <img 
+                                                    key={img.id} 
+                                                    src={`/storage/${img.path}`} 
+                                                    alt="Resource photo" 
+                                                    className="w-24 h-24 object-cover rounded-lg border border-zinc-200"
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="pt-4 border-t border-zinc-100 flex items-center justify-end gap-3">

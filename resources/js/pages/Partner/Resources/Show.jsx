@@ -72,6 +72,25 @@ export default function ShowResource({
 
                         {/* TAB 1: OVERVIEW & ANALYTICS */}
                         <TabsContent value="overview" className="space-y-6">
+                            {resource.images && resource.images.length > 0 && (
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Photos</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="flex gap-4 overflow-x-auto pb-2">
+                                            {resource.images.map((img) => (
+                                                <img 
+                                                    key={img.id} 
+                                                    src={`/storage/${img.path}`} 
+                                                    alt="Property photo" 
+                                                    className="h-48 w-auto object-cover rounded-xl border border-zinc-200"
+                                                />
+                                            ))}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            )}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <Card>
                                     <CardHeader className="flex flex-row items-center justify-between pb-2">

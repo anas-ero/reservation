@@ -71,7 +71,7 @@ export default function Dashboard({
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-zinc-800 dark:text-zinc-200 leading-tight">
+                <h2 className="font-semibold text-xl text-zinc-800 leading-tight">
                     Super Admin Overview
                 </h2>
             }
@@ -131,7 +131,7 @@ export default function Dashboard({
                                     {stats.occupancy_rate}
                                 </div>
                                 {/* Modern Tailwind Progress Bar */}
-                                <div className="mt-3 h-1.5 w-full bg-zinc-100 dark:bg-zinc-700 rounded-full overflow-hidden">
+                                <div className="mt-3 h-1.5 w-full bg-zinc-100 rounded-full overflow-hidden">
                                     <div
                                         className="h-full bg-amber-500 transition-all duration-500 rounded-full"
                                         style={{
@@ -250,7 +250,7 @@ export default function Dashboard({
                                 <CardContent>
                                     {pendingPartners.length === 0 ? (
                                         <div className="text-center py-12 flex flex-col items-center">
-                                            <div className="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mb-4">
+                                            <div className="w-12 h-12 bg-zinc-100 rounded-full flex items-center justify-center mb-4">
                                                 <CheckCircle className="w-6 h-6 text-emerald-500" />
                                             </div>
                                             <h4 className="text-lg font-semibold text-zinc-900 dark:text-white">
@@ -275,7 +275,7 @@ export default function Dashboard({
                                                     <TableRow key={partner.id}>
                                                         <TableCell className="font-medium">
                                                             <div className="flex items-center gap-3">
-                                                                <div className="p-2 bg-orange-50 dark:bg-orange-950/30 rounded-md border border-orange-100 dark:border-orange-900/50">
+                                                                <div className="p-2 bg-orange-50 rounded-md border border-orange-100 dark:border-orange-900/50">
                                                                     <UserCircle2 className="w-4 h-4 text-orange-600 dark:text-orange-400" />
                                                                 </div>
                                                                 <div className="flex flex-col">
@@ -318,7 +318,7 @@ export default function Dashboard({
                                     </CardTitle>
                                     <Badge
                                         variant="outline"
-                                        className="text-xs animate-pulse bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400"
+                                        className="text-xs animate-pulse bg-emerald-50 text-emerald-700 dark:text-emerald-400"
                                     >
                                         Live
                                     </Badge>
@@ -329,12 +329,12 @@ export default function Dashboard({
                                             No recent actions recorded.
                                         </p>
                                     ) : (
-                                        <div className="relative pl-4 border-l border-zinc-200 dark:border-zinc-700 space-y-6">
+                                        <div className="relative pl-4 border-l border-zinc-200 space-y-6">
                                             {recentActivity.map((activity) => (
                                                 <div key={activity.id} className="relative group">
                                                     {/* Timeline Dot Indicator */}
                                                     <div
-                                                        className={`absolute -left-[21px] mt-1.5 w-2.5 h-2.5 rounded-full border-2 bg-white dark:bg-zinc-950 transition-colors ${
+                                                        className={`absolute -left-[21px] mt-1.5 w-2.5 h-2.5 rounded-full border-2 bg-white transition-colors ${
                                                             activity.status === "confirmed"
                                                                 ? "border-emerald-500"
                                                                 : activity.status === "pending"
@@ -354,7 +354,7 @@ export default function Dashboard({
                                                             <Clock className="w-3 h-3" />
                                                             <span>{activity.time}</span>
                                                             <span>•</span>
-                                                            <span className="uppercase tracking-wider text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-semibold text-zinc-600 dark:text-zinc-400">
+                                                            <span className="uppercase tracking-wider text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 font-semibold text-zinc-600 dark:text-zinc-400">
                                                                 {activity.resource_type}
                                                             </span>
                                                             <span>•</span>

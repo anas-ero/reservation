@@ -516,18 +516,19 @@ export default function Show({ auth, resource, ratings }) {
         end_time: formatDateInput(defaultCheckOutDate),
         guests: 2,
     });
+    const durationUnits = calculateDuration(data.start_time, data.end_time);
+    const serviceFee = Math.round(price * durationUnits * 0.12);
+    const total = (price * durationUnits) + serviceFee;
 
-    const nights = calculateNights(data.start_time, data.end_time);
-    const serviceFee = Math.round(price * nights * 0.12);
-    const total = (price * nights) + serviceFee;
-
+    
     // ── State ──
     const [saved, setSaved] = useState(false);
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [showAllAmenities, setShowAllAmenities] = useState(false);
     const [bookingStatus, setBookingStatus] = useState(null);
     const [bookingSheetOpen, setBookingSheetOpen] = useState(false);
-
+    
+    
     const visibleAmenities = showAllAmenities
         ? applicableFeatures
         : applicableFeatures.slice(0, 6);
@@ -564,6 +565,20 @@ export default function Show({ auth, resource, ratings }) {
                 setBookingSheetOpen(true);
             },
         });
+    };
+
+    const resourceRatings = ratings || item.ratings || [];
+    const totalReviews = resourceRatings.length;
+    const averageRating =
+        totalReviews > 0
+            ? (
+                  resourceRatings.reduce((acc, curr) => acc + Number(curr.rating), 0) /
+                  totalReviews
+              ).toFixed(1)
+            : "0.0";
+
+    const scrollToReviews = () => {
+        document.getElementById('reviews-section')?.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
@@ -759,13 +774,16 @@ export default function Show({ auth, resource, ratings }) {
 
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-zinc-600 font-medium">
                             <span className="flex items-center gap-1.5">
-                                <StarRow score={4.9} />
+                                <StarRow score={Number(averageRating)} />
                                 <span className="font-bold text-zinc-800">
-                                    4.9
+                                    {averageRating}
                                 </span>
                                 <span className="text-zinc-400">·</span>
-                                <button className="underline underline-offset-2 hover:text-zinc-900 transition-colors">
-                                    reviews
+                                <button 
+                                    onClick={scrollToReviews}
+                                    className="underline underline-offset-2 hover:text-zinc-900 transition-colors"
+                                >
+                                    {totalReviews} {totalReviews === 1 ? 'review' : 'reviews'}
                                 </button>
                             </span>
                             {item.views > 0 && (
@@ -943,8 +961,9 @@ export default function Show({ auth, resource, ratings }) {
 
                         <Separator />
 
-                        {/* Reviews */}
-                        <ResourceReviews resource={resource} auth={auth} />
+                        <div id="reviews-section">
+                            <ResourceReviews resource={resource} auth={auth} ratings={resourceRatings} />
+                        </div>
                     </div>
 
                     {/* ── Booking Widget ── */}
@@ -964,11 +983,10 @@ export default function Show({ auth, resource, ratings }) {
                                         <div className="flex items-center gap-1 text-sm">
                                             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                                             <span className="font-semibold text-zinc-800">
-                                                {item.rating?.toFixed(1) ||
-                                                    "4.9"}
+                                                {averageRating}
                                             </span>
                                             <span className="text-zinc-400 text-xs ml-0.5">
-                                                · 124
+                                                · {totalReviews} {totalReviews === 1 ? 'review' : 'reviews'}
                                             </span>
                                         </div>
                                     </CardTitle>
@@ -1155,10 +1173,10 @@ export default function Show({ auth, resource, ratings }) {
                         <div className="flex items-center gap-1 mt-0.5">
                             <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                             <span className="text-xs font-semibold text-zinc-700">
-                                4.9
+                                {averageRating}
                             </span>
                             <span className="text-xs text-zinc-400">
-                                · 124 reviews
+                                · {totalReviews} {totalReviews === 1 ? 'review' : 'reviews'}
                             </span>
                         </div>
                     </div>

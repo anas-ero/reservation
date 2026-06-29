@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminResourceController;
+use App\Http\Controllers\AdminTransactionController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\Partner\PartnerResourceController;
@@ -13,8 +15,8 @@ use App\Http\Middleware\CheckOwnerVerified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\AdminTransactionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FavoriteController;
 
 Route::get('/', [HeroController::class, 'index'])->name('home');
 
@@ -68,10 +70,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::patch('/resources/{resource}/toggle', [AdminResourceController::class, 'toggleStatus'])->name('admin.resources.toggle');
     // Global Bookings Ledger Route
     Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('transactions');
-    // system settings route
-    Route::get('/settings', function () {
-        return Inertia::render('Admin/Settings/Index');
-    })->name('admin.settings');
+    // Manage Users Routes
+    Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 // --- 3. CUSTOMER DASHBOARD ROUTE ---
@@ -86,7 +87,10 @@ Route::get('/resources', [ResourceController::class, 'index'])->name('public.res
 Route::get('/resources/{resource}', [ResourceController::class, 'show'])->name('public.resources.show');
 // Your existing reservation routes...
 Route::post('/reservations', [ReservationController::class, 'store'])->middleware('auth');
+Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->middleware('auth')->name('reservations.cancel');
 Route::post('/resources/{resource}/ratings', [RatingController::class, 'store'])->middleware('auth')->name('ratings.store');
+Route::delete('/ratings/{rating}', [RatingController::class, 'destroy'])->middleware('auth')->name('ratings.destroy');
 Route::get('/reservations', [ReservationController::class, 'index']);
+Route::post('/favorites/toggle', [FavoriteController::class, 'toggle'])->middleware('auth')->name('favorites.toggle');
 
 require __DIR__.'/auth.php';

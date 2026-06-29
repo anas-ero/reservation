@@ -86,4 +86,9 @@ class Resource extends Model
         return $this->belongsTo(Service::class);
     }
 
+    // Favorites
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }

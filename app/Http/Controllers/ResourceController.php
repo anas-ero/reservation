@@ -54,7 +54,7 @@ class ResourceController extends Controller
         }
 
         // ✅ Load relations
-        $resources = $query->with('images')->paginate(10)->withQueryString();
+        $resources = $query->with(['images', 'ratings'])->paginate(10)->withQueryString();
 
         return Inertia::render('ResourcesPage/Index', [
             'resources' => $resources,

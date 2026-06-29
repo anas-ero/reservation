@@ -29,9 +29,10 @@ import {
     User,
     LogOut,
     ChevronUp,
+    Heart,
 } from "lucide-react";
 import { Layers, ReceiptEuroIcon } from "lucide-react";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+
 import { Settings } from "lucide-react";
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -70,18 +71,42 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <SidebarMenuItem>
                                             <SidebarMenuButton
                                                 asChild
-                                                isActive={isRouteActive(
-                                                    "dashboard",
-                                                )}
+                                                isActive={isRouteActive("dashboard") && !usePage().url.includes('tab=')}
                                             >
                                                 <Link
                                                     href={route("dashboard")}
-                                                    className={getLinkStyle(
-                                                        "dashboard",
-                                                    )}
+                                                    className={getLinkStyle("dashboard")}
+                                                >
+                                                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                                                    <span>Overview</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={usePage().url.includes('tab=favorites')}
+                                            >
+                                                <Link
+                                                    href={route("dashboard") + "?tab=favorites"}
+                                                    className={getLinkStyle("dashboard")}
+                                                >
+                                                    <Heart className="mr-2 h-4 w-4" />
+                                                    <span>Saved Resources</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                        <SidebarMenuItem>
+                                            <SidebarMenuButton
+                                                asChild
+                                                isActive={usePage().url.includes('tab=history')}
+                                            >
+                                                <Link
+                                                    href={route("dashboard") + "?tab=history"}
+                                                    className={getLinkStyle("dashboard")}
                                                 >
                                                     <Calendar className="mr-2 h-4 w-4" />
-                                                    <span>My Bookings</span>
+                                                    <span>Past Activity</span>
                                                 </Link>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
@@ -234,25 +259,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 </Link>
                                             </SidebarMenuButton>
                                         </SidebarMenuItem>
-
-                                        <SidebarMenuItem>
-                                            <SidebarMenuButton
-                                                asChild
-                                                isActive={isRouteActive(
-                                                    "admin.settings",
-                                                )}
-                                            >
-                                                <Link
-                                                    href="/admin/settings"
-                                                    className={getLinkStyle(
-                                                        "admin.settings",
-                                                    )}
-                                                >
-                                                    <Settings className="mr-2 h-4 w-4" />
-                                                    <span>System Settings</span>
-                                                </Link>
-                                            </SidebarMenuButton>
-                                        </SidebarMenuItem>
                                     </>
                                 )}
                             </SidebarMenu>
@@ -270,7 +276,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         size="lg"
                                         className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                                     >
-                                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400 font-bold">
+                                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700 font-bold">
                                             {user.name.charAt(0)}
                                         </div>
                                         <div className="flex flex-col gap-0.5 leading-none">
@@ -318,7 +324,7 @@ export default function AuthenticatedLayout({ header, children }) {
             {/* 2. THE MAIN CONTENT AREA */}
             <SidebarInset>
                 {/* Top Header with Hamburger Trigger */}
-                <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 dark:bg-gray-800 dark:border-gray-700">
+                <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 dark:border-gray-700">
                     <SidebarTrigger className="-ml-1" />
                     <div className="w-full">
                         {header && (
@@ -327,7 +333,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         )}
                     </div>
-                    <ModeToggle />
+
                 </header>
 
                 {/* Page Content Slot */}

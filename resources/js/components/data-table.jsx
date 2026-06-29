@@ -216,7 +216,7 @@ const columns = [
                     Target
                 </Label>
                 <Input
-                    className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
+                    className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
                     defaultValue={row.original.target}
                     id={`${row.original.id}-target`}
                 />
@@ -244,7 +244,7 @@ const columns = [
                     Limit
                 </Label>
                 <Input
-                    className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
+                    className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
                     defaultValue={row.original.limit}
                     id={`${row.original.id}-limit`}
                 />

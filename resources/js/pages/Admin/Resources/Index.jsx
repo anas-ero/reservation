@@ -54,7 +54,7 @@ export default function Index({ auth, resources, filters }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-zinc-800 dark:text-zinc-200 leading-tight">
+                <h2 className="font-semibold text-xl text-zinc-800 leading-tight">
                     Platform Listings Moderator
                 </h2>
             }
@@ -89,7 +89,7 @@ export default function Index({ auth, resources, filters }) {
                                         <option value="pitch">Pitches</option>
                                     </select>
                                 </div>
-                                <Button type="submit" className="bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 w-full md:w-auto">
+                                <Button type="submit" className="bg-zinc-900 text-white w-full md:w-auto">
                                     Apply Filters
                                 </Button>
                             </form>
@@ -121,11 +121,11 @@ export default function Index({ auth, resources, filters }) {
                                             <TableRow key={item.id}>
                                                 <TableCell className="font-medium">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="p-2 bg-zinc-50 dark:bg-zinc-800 rounded-md border dark:border-zinc-700">
+                                                        <div className="p-2 bg-zinc-50 rounded-md border dark:border-zinc-700">
                                                             {getTypeIcon(item.type)}
                                                         </div>
                                                         <div className="flex flex-col">
-                                                            <span className="text-sm text-zinc-900 dark:text-zinc-100 font-semibold">{item.title}</span>
+                                                            <span className="text-sm text-zinc-900 font-semibold">{item.title}</span>
                                                             <span className="text-xs text-zinc-400 uppercase tracking-wider font-medium">{item.type}</span>
                                                         </div>
                                                     </div>
@@ -148,7 +148,7 @@ export default function Index({ auth, resources, filters }) {
                                                 <TableCell>
                                                     <Badge 
                                                         variant={item.status === 'active' ? 'default' : 'secondary'}
-                                                        className={item.status === 'active' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400' : 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-400'}
+                                                        className={item.status === 'active' ? 'bg-emerald-100 text-emerald-800 dark:text-emerald-400' : 'bg-zinc-100 text-zinc-800 dark:text-zinc-400'}
                                                     >
                                                         {item.status === 'active' ? 'Active' : 'Hidden'}
                                                     </Badge>

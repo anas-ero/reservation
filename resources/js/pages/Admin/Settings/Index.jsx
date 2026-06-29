@@ -34,7 +34,7 @@ export default function Index({ auth }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-zinc-800 dark:text-zinc-200 leading-tight">
+                <h2 className="font-semibold text-xl text-zinc-800 leading-tight">
                     Platform Master Configurations
                 </h2>
             }
@@ -82,7 +82,7 @@ export default function Index({ auth }) {
                                 <CardDescription>Instantly toggle public availability filters or execute runtime system locks.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
-                                <div className="flex items-center justify-between p-3 rounded-lg border dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/20">
+                                <div className="flex items-center justify-between p-3 rounded-lg border bg-zinc-50/50 dark:bg-zinc-900/20">
                                     <div className="space-y-0.5">
                                         <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Global Maintenance Lockout</span>
                                         <p className="text-xs text-zinc-400">Force public search routers to show an offline maintenance warning layout.</p>
@@ -127,7 +127,7 @@ export default function Index({ auth }) {
 
                         {/* SUBMIT TRIGGERS */}
                         <div className="flex justify-end">
-                            <Button type="submit" disabled={isSaving} className="bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-medium">
+                            <Button type="submit" disabled={isSaving} className="bg-zinc-900 text-white font-medium">
                                 {isSaving ? (
                                     <>
                                         <RefreshCw className="w-4 h-4 mr-2 animate-spin" />

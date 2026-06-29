@@ -1,7 +1,7 @@
 import MainLayout from "@/Layouts/MainLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
-import { Filter, MapPin } from "lucide-react"; // Make sure to install lucide-react if you haven't!
+import { Filter, MapPin, Star } from "lucide-react"; // Added Star
 
 import {
     ButtonGroup,
@@ -268,9 +268,19 @@ export default function Index({ auth, resources, filters }) {
 
                                         <div className="p-4 flex flex-col gap-3 flex-1 justify-between">
                                             <div>
-                                                <h2 className="text-lg font-bold text-zinc-950 group-hover:underline cursor-pointer line-clamp-1">
-                                                    {item.title || item.name}
-                                                </h2>
+                                                <div className="flex justify-between items-start">
+                                                    <h2 className="text-lg font-bold text-zinc-950 group-hover:underline cursor-pointer line-clamp-1">
+                                                        {item.title || item.name}
+                                                    </h2>
+                                                    <div className="flex items-center gap-1 text-sm font-bold text-zinc-900 ml-2 bg-white/80 rounded px-1">
+                                                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 flex-shrink-0" />
+                                                        <span>
+                                                            {item.ratings?.length > 0 
+                                                                ? (item.ratings.reduce((acc, r) => acc + Number(r.rating), 0) / item.ratings.length).toFixed(1) 
+                                                                : "New"}
+                                                        </span>
+                                                    </div>
+                                                </div>
                                                 <div className="flex items-center text-sm text-zinc-500 mt-1">
                                                     <MapPin className="w-3.5 h-3.5 mr-1" />{" "}
                                                     {item.location}

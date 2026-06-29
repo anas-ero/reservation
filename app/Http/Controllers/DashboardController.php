@@ -12,6 +12,15 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
 
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->role === 'owner') {
+            if (!$user->is_verified) {
+                return redirect()->route('partner.pending');
+            }
+            return redirect()->route('owner.dashboard');
+        }
+
         // 1. Fetch current active or pending bookings
         $upcomingBookings = Reservation::with('resource')
             ->where('user_id', $user->id)
@@ -23,6 +32,7 @@ class DashboardController extends Controller
                 return [
                     'id' => $booking->id,
                     'reference' => '#BKG-'.str_pad($booking->id, 4, '0', STR_PAD_LEFT), // e.g., #BKG-0012
+                    'resource_id' => $booking->resource ? $booking->resource->id : null,
                     'title' => $booking->resource ? $booking->resource->title : 'Listing Name',
                     'type' => $booking->resource ? $booking->resource->type : 'N/A',
                     'price' => number_format($booking->resource ? $booking->resource->price : 0, 2),
@@ -34,18 +44,27 @@ class DashboardController extends Controller
                 ];
             });
 
-        // 2. Fetch past or cancelled history
-        $pastBookings = Reservation::with('resource')
+        // 2. Fetch past or cancelled history (with filters & pagination)
+        $typeFilter = request('type');
+        $pastBookingsQuery = Reservation::with('resource')
             ->where('user_id', $user->id)
-            ->whereIn('status', ['cancelled', 'completed'])
-            ->orderBy('start_time')
-            ->latest()
-            ->take(5)
-            ->get()
-            ->map(function ($booking) {
+            ->whereIn('status', ['cancelled', 'completed']);
+        
+        if ($typeFilter && $typeFilter !== 'all') {
+            $pastBookingsQuery->whereHas('resource', function ($q) use ($typeFilter) {
+                $q->where('type', $typeFilter);
+            });
+        }
+
+        $pastBookings = $pastBookingsQuery
+            ->orderBy('start_time', 'desc')
+            ->paginate(5)
+            ->withQueryString()
+            ->through(function ($booking) {
                 return [
                     'id' => $booking->id,
                     'reference' => '#BKG-'.str_pad($booking->id, 4, '0', STR_PAD_LEFT), // e.g., #BKG-0012
+                    'resource_id' => $booking->resource ? $booking->resource->id : null,
                     'title' => $booking->resource ? $booking->resource->title : 'Listing Name',
                     'type' => $booking->resource ? $booking->resource->type : 'N/A',
                     'price' => number_format($booking->resource ? $booking->resource->price : 0, 2),
@@ -61,14 +80,27 @@ class DashboardController extends Controller
         $customerStats = [
             'active_count' => $upcomingBookings->count(),
             'total_spent' => number_format(Reservation::where('user_id', $user->id)
-                ->where('status', 'confirmed')
+                ->where('status', 'completed')
                 ->sum('total_price'), 2).' DH',
         ];
+
+        // 4. Fetch favorites
+        $favorites = $user->favorites()->with('resource')->get()->map(function ($fav) {
+            return [
+                'id' => $fav->id,
+                'resource_id' => $fav->resource->id,
+                'title' => $fav->resource->title,
+                'type' => $fav->resource->type,
+                'price' => number_format($fav->resource->price, 2),
+            ];
+        });
 
         return Inertia::render('CustomerDashboard', [
             'upcomingBookings' => $upcomingBookings,
             'pastBookings' => $pastBookings,
             'stats' => $customerStats,
+            'favorites' => $favorites,
+            'filters' => ['type' => $typeFilter],
         ]);
     }
 }

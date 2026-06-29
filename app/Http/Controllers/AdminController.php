@@ -16,9 +16,8 @@ class AdminController extends Controller
     {
         // 1. DYNAMIC ANALYTICS CALCULATIONS
 
-        // Calculate Total Revenue (Assuming a flat rate of 100 DH per confirmed slot for your demo)
-        // Note: If you add a 'price' column to your resources later, change this to: ->sum('price')
-        $totalRevenue = Reservation::where('status', 'confirmed')->count() * 100;
+        // Calculate Total Revenue by summing the total_price of all confirmed reservations
+        $totalRevenue = Reservation::where('status', 'confirmed')->sum('total_price') ?? 0;
 
         // Count all currently active/confirmed bookings
         $activeBookings = Reservation::where('status', 'confirmed')->count();

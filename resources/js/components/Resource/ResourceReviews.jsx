@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useForm } from "@inertiajs/react";
-import { Star, MessageSquarePlus } from "lucide-react";
+import { useForm, router } from "@inertiajs/react";
+import { Star, MessageSquarePlus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     Popover,
@@ -24,13 +24,13 @@ function InitialsAvatar({ initials, size = "md" }) {
     );
 }
 
-export default function ResourceReviews({ resource, auth }) {
-    const ratings = resource.ratings || [];
+export default function ResourceReviews({ resource, auth, ratings: propRatings }) {
+    const ratings = propRatings || resource?.ratings || [];
     const totalReviews = ratings.length;
     const averageRating =
         totalReviews > 0
             ? (
-                  ratings.reduce((acc, curr) => acc + curr.rating, 0) /
+                  ratings.reduce((acc, curr) => acc + Number(curr.rating), 0) /
                   totalReviews
               ).toFixed(1)
             : "0.0";
@@ -40,15 +40,13 @@ export default function ResourceReviews({ resource, auth }) {
         comment: "",
     });
 
-    const [popoverOpen, setPopoverOpen] = useState(false);
-
     const submitReview = (e) => {
         e.preventDefault();
         post(route("ratings.store", resource.id), {
             preserveScroll: true,
             onSuccess: () => {
-                setPopoverOpen(false);
                 reset();
+                // Radix popover will close automatically or page state will refresh
             },
         });
     };
@@ -70,7 +68,7 @@ export default function ResourceReviews({ resource, auth }) {
                 </div>
 
                 {auth?.user && (
-                    <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+                    <Popover>
                         <PopoverTrigger asChild>
                             <Button
                                 variant="outline"
@@ -80,7 +78,11 @@ export default function ResourceReviews({ resource, auth }) {
                                 Write a Review
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-80 p-5 rounded-2xl shadow-xl border-border">
+                        <PopoverContent 
+                            className="w-80 p-5 rounded-2xl shadow-xl border border-zinc-200 z-[9999] bg-white dark:bg-zinc-950" 
+                            align="end" 
+                            sideOffset={8}
+                        >
                             <form onSubmit={submitReview} className="space-y-4">
                                 <div>
                                     <h4 className="font-bold text-zinc-900 mb-1">
@@ -138,9 +140,7 @@ export default function ResourceReviews({ resource, auth }) {
                                     disabled={processing}
                                     className="w-full bg-zinc-950 hover:bg-zinc-800 text-white rounded-xl py-2"
                                 >
-                                    {processing
-                                        ? "Submitting..."
-                                        : "Submit Review"}
+                                    {processing ? "Submitting..." : "Submit Review"}
                                 </Button>
                             </form>
                         </PopoverContent>
@@ -197,14 +197,30 @@ export default function ResourceReviews({ resource, auth }) {
                                             {dateStr}
                                         </div>
                                     </div>
-                                    <div className="ml-auto flex">
-                                        {Array.from({ length: 5 }).map(
-                                            (_, i) => (
-                                                <Star
-                                                    key={i}
-                                                    className={`w-3 h-3 ${i < review.rating ? "fill-amber-400 text-amber-400" : "fill-zinc-200 text-zinc-200"}`}
-                                                />
-                                            ),
+                                    <div className="ml-auto flex items-center gap-4">
+                                        <div className="flex">
+                                            {Array.from({ length: 5 }).map(
+                                                (_, i) => (
+                                                    <Star
+                                                        key={i}
+                                                        className={`w-3 h-3 ${i < review.rating ? "fill-amber-400 text-amber-400" : "fill-zinc-200 text-zinc-200"}`}
+                                                    />
+                                                ),
+                                            )}
+                                        </div>
+                                        {auth?.user?.id === review.user_id && (
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    if (confirm("Are you sure you want to delete this review?")) {
+                                                        router.delete(route('ratings.destroy', review.id), { preserveScroll: true });
+                                                    }
+                                                }}
+                                                className="text-zinc-400 hover:text-red-500 transition-colors"
+                                                title="Delete Review"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
                                         )}
                                     </div>
                                 </div>

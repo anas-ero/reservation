@@ -37,13 +37,13 @@ export default function Index({ auth, reservations, stats, filters }) {
         switch (status) {
             case "confirmed":
                 return (
-                    <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400 border-none">
+                    <Badge className="bg-emerald-100 text-emerald-800 border-none">
                         Confirmed
                     </Badge>
                 );
             case "pending":
                 return (
-                    <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-400 border-none">
+                    <Badge className="bg-amber-100 text-amber-800 border-none">
                         Pending
                     </Badge>
                 );
@@ -51,7 +51,7 @@ export default function Index({ auth, reservations, stats, filters }) {
                 return (
                     <Badge
                         variant="secondary"
-                        className="bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-400 border-none"
+                        className="bg-zinc-100 text-zinc-800 border-none"
                     >
                         Cancelled
                     </Badge>
@@ -74,7 +74,7 @@ export default function Index({ auth, reservations, stats, filters }) {
         <AuthenticatedLayout
             user={auth.user}
             header={
-                <h2 className="font-semibold text-xl text-zinc-800 dark:text-zinc-200 leading-tight">
+                <h2 className="font-semibold text-xl text-zinc-800 leading-tight">
                     Global Bookings & Ledger
                 </h2>
             }
@@ -85,7 +85,7 @@ export default function Index({ auth, reservations, stats, filters }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     {/* --- FINANCIAL MICRO-METRICS ROW --- */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <Card className="border border-zinc-100 dark:border-zinc-800 shadow-none">
+                        <Card className="border border-zinc-100 shadow-none">
                             <CardContent className="pt-4 flex items-center justify-between">
                                 <div className="space-y-1">
                                     <p className="text-xs font-medium text-zinc-500">
@@ -95,13 +95,13 @@ export default function Index({ auth, reservations, stats, filters }) {
                                         {stats.gross_volume}
                                     </p>
                                 </div>
-                                <div className="p-2.5 bg-emerald-50 dark:bg-emerald-950/30 rounded-lg">
+                                <div className="p-2.5 bg-emerald-50 rounded-lg">
                                     <DollarSign className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                                 </div>
                             </CardContent>
                         </Card>
 
-                        <Card className="border border-zinc-100 dark:border-zinc-800 shadow-none">
+                        <Card className="border border-zinc-100 shadow-none">
                             <CardContent className="pt-4 flex items-center justify-between">
                                 <div className="space-y-1">
                                     <p className="text-xs font-medium text-zinc-500">
@@ -111,13 +111,13 @@ export default function Index({ auth, reservations, stats, filters }) {
                                         {stats.total_count}
                                     </p>
                                 </div>
-                                <div className="p-2.5 bg-zinc-100 dark:bg-zinc-800 rounded-lg">
+                                <div className="p-2.5 bg-zinc-100 rounded-lg">
                                     <FileText className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
                                 </div>
                             </CardContent>
                         </Card>
 
-                        <Card className="border border-zinc-100 dark:border-zinc-800 shadow-none">
+                        <Card className="border border-zinc-100 shadow-none">
                             <CardContent className="pt-4 flex items-center justify-between">
                                 <div className="space-y-1">
                                     <p className="text-xs font-medium text-zinc-500">
@@ -127,7 +127,7 @@ export default function Index({ auth, reservations, stats, filters }) {
                                         {stats.pending_count}
                                     </p>
                                 </div>
-                                <div className="p-2.5 bg-amber-50 dark:bg-amber-950/30 rounded-lg">
+                                <div className="p-2.5 bg-amber-50 rounded-lg">
                                     <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                                 </div>
                             </CardContent>
@@ -201,7 +201,7 @@ export default function Index({ auth, reservations, stats, filters }) {
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="flex items-center gap-2">
-                                                        <span className="p-1 rounded bg-zinc-50 dark:bg-zinc-800 border dark:border-zinc-700">
+                                                        <span className="p-1 rounded bg-zinc-50 border dark:border-zinc-700">
                                                             {getTypeIcon(
                                                                 log.resource_type,
                                                             )}
